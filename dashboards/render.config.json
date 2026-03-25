@@ -1,0 +1,14 @@
+{
+  "defaults": {
+    "width": 800,
+    "height": 600,
+    "deviceScaleFactor": 1,
+    "colorScheme": "light"
+  },
+  "files": {
+    "helloworld.html": {
+      "width": 800,
+      "height": 480
+    }
+  }
+}
