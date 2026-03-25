@@ -7,7 +7,7 @@
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;700&family=Playfair+Display:wght@400;700;900&display=swap');
 
-* { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: none; -moz-osx-font-smoothing: unset; }
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
 
 body {
   margin: 0; width: 768px; height: 1024px; overflow: hidden;
@@ -21,8 +21,8 @@ body {
 }
 
 .header { display: flex; align-items: baseline; gap: 16px; margin-bottom: 4px; }
-.header-f1 { font-family: 'Playfair Display', serif; font-weight: 900; font-size: 48px; letter-spacing: -1px; line-height: 1; }
-.header-year { font-family: 'Playfair Display', serif; font-weight: 400; font-size: 48px; letter-spacing: -1px; line-height: 1; color: #444; }
+.header-f1 { font-family: 'Playfair Display', serif; font-weight: 900; font-size: 36px; letter-spacing: -1px; line-height: 1; }
+.header-year { font-family: 'Playfair Display', serif; font-weight: 400; font-size: 36px; letter-spacing: -1px; line-height: 1; color: #444; }
 .header-subtitle { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 500; letter-spacing: 3.5px; text-transform: uppercase; color: #444; margin-bottom: 10px; }
 .header-rule { border: none; border-top: 1px solid #000; margin-bottom: 20px; }
 
@@ -39,30 +39,30 @@ thead th {
 .col-pts { width: 80px; text-align: right; }
 
 tbody td {
-  padding: 16px 0; vertical-align: baseline;
+  padding: 10px 0; vertical-align: baseline;
   border-bottom: 1px solid #ddd;
 }
 tbody tr:last-child td { border-bottom: none; }
 
 td.pos {
   font-family: 'Playfair Display', serif; font-weight: 700;
-  font-size: 28px; color: #000;
+  font-size: 22px; color: #000;
 }
-tr.top-three td.pos { font-size: 34px; font-weight: 900; }
+tr.top-three td.pos { font-size: 26px; font-weight: 900; }
 
 td.team {
   font-family: 'Inter', sans-serif; font-weight: 600;
-  font-size: 18px; color: #000;
+  font-size: 16px; color: #000;
 }
 
 td.drivers {
   font-family: 'Inter', sans-serif; font-weight: 400;
-  font-size: 13px; color: #666; line-height: 1.5;
+  font-size: 12px; color: #666; line-height: 1.4;
 }
 
 td.pts {
   font-family: 'JetBrains Mono', monospace; font-weight: 700;
-  font-size: 20px; text-align: right; color: #000; padding-right: 4px;
+  font-size: 17px; text-align: right; color: #000; padding-right: 4px;
 }
 td.pts .pts-label {
   font-size: 10px; font-weight: 400; color: #888; margin-left: 2px;
