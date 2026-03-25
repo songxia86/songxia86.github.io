@@ -1,7 +1,7 @@
 {
   "configs": {
     "KoboGlo": {
-      "width": 758,
+      "width": 768,
       "height": 1024,
       "deviceScaleFactor": 1,
       "colorScheme": "light",
