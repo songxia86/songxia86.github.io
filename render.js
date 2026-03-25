@@ -6,38 +6,51 @@ const DASHBOARDS = path.join(__dirname, 'dashboards');
 const CONFIG_PATH = path.join(DASHBOARDS, 'render.config.json');
 
 async function main() {
-  const config = JSON.parse(fs.readFileSync(CONFIG_PATH, 'utf8'));
-  const defaults = config.defaults || {};
-  const overrides = config.files || {};
+  const { configs } = JSON.parse(fs.readFileSync(CONFIG_PATH, 'utf8'));
 
-  const htmlFiles = fs.readdirSync(DASHBOARDS).filter(f => f.endsWith('.html'));
-
-  if (htmlFiles.length === 0) {
-    console.log('No HTML files found in dashboards/');
+  if (!configs || Object.keys(configs).length === 0) {
+    console.log('No configs defined in render.config.json');
     return;
   }
 
   const browser = await chromium.launch();
 
-  for (const file of htmlFiles) {
-    const settings = { ...defaults, ...overrides[file] };
-    const filePath = path.join(DASHBOARDS, file);
-    const pngPath = filePath.replace(/\.html$/, '.png');
+  for (const [configName, config] of Object.entries(configs)) {
+    const { files, ...renderSettings } = config;
 
-    console.log(`Rendering ${file} → ${path.basename(pngPath)} (${settings.width}x${settings.height})`);
+    if (!files || files.length === 0) {
+      console.log(`[${configName}] No files listed, skipping`);
+      continue;
+    }
+
+    console.log(`[${configName}] ${renderSettings.width}x${renderSettings.height}`);
 
     const context = await browser.newContext({
-      viewport: { width: settings.width, height: settings.height },
-      deviceScaleFactor: settings.deviceScaleFactor || 1,
-      colorScheme: settings.colorScheme || 'light',
+      viewport: { width: renderSettings.width, height: renderSettings.height },
+      deviceScaleFactor: renderSettings.deviceScaleFactor || 1,
+      colorScheme: renderSettings.colorScheme || 'light',
     });
 
-    const page = await context.newPage();
-    await page.goto(`file://${filePath}`, { waitUntil: 'networkidle' });
-    await page.screenshot({ path: pngPath, fullPage: false });
-    await context.close();
+    for (const file of files) {
+      const filePath = path.join(DASHBOARDS, file);
 
-    console.log(`  ✓ ${pngPath}`);
+      if (!fs.existsSync(filePath)) {
+        console.log(`  ✗ ${file} not found, skipping`);
+        continue;
+      }
+
+      const pngName = file.replace(/\.html$/, `.${configName}.png`);
+      const pngPath = path.join(DASHBOARDS, pngName);
+
+      const page = await context.newPage();
+      await page.goto(`file://${filePath}`, { waitUntil: 'networkidle' });
+      await page.screenshot({ path: pngPath, fullPage: false });
+      await page.close();
+
+      console.log(`  ✓ ${pngName}`);
+    }
+
+    await context.close();
   }
 
   await browser.close();
