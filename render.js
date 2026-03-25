@@ -81,6 +81,51 @@ async function main() {
 
   await browser.close();
   server.close();
+
+  // Generate index.html with links to all HTML and PNG files
+  const allFiles = fs.readdirSync(DASHBOARDS)
+    .filter(f => f.endsWith('.html') || f.endsWith('.png'))
+    .sort();
+  const htmlFiles = allFiles.filter(f => f.endsWith('.html') && f !== 'index.html');
+  const pngFiles = allFiles.filter(f => f.endsWith('.png'));
+
+  const ts = new Date().toISOString().replace('T', ' ').slice(0, 19) + ' UTC';
+  let idx = `<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><title>InkDash Dashboards</title>
+<style>
+body { font-family: system-ui, sans-serif; max-width: 720px; margin: 40px auto; padding: 0 20px; color: #333; }
+h1 { font-size: 24px; margin-bottom: 4px; }
+p.ts { font-size: 12px; color: #999; margin-bottom: 24px; }
+h2 { font-size: 16px; color: #666; margin: 24px 0 8px; }
+ul { list-style: none; padding: 0; }
+li { margin: 6px 0; }
+a { color: #333; text-decoration: none; padding: 6px 10px; display: inline-block; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; }
+a:hover { background: #f4f4f4; border-color: #bbb; }
+.png-grid { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 12px; }
+.png-card { border: 1px solid #ddd; border-radius: 8px; overflow: hidden; width: 220px; }
+.png-card img { width: 100%; display: block; }
+.png-card .label { padding: 6px 10px; font-size: 12px; color: #666; }
+</style></head><body>
+<h1>InkDash Dashboards</h1>
+<p class="ts">Last rendered: ${ts}</p>`;
+
+  if (htmlFiles.length) {
+    idx += `<h2>HTML Sources</h2><ul>`;
+    htmlFiles.forEach(f => { idx += `<li><a href="${f}">${f}</a></li>`; });
+    idx += `</ul>`;
+  }
+
+  if (pngFiles.length) {
+    idx += `<h2>Rendered PNGs</h2><div class="png-grid">`;
+    pngFiles.forEach(f => {
+      idx += `<div class="png-card"><a href="${f}"><img src="${f}" alt="${f}"></a><div class="label">${f}</div></div>`;
+    });
+    idx += `</div>`;
+  }
+
+  idx += `</body></html>`;
+  fs.writeFileSync(path.join(DASHBOARDS, 'index.html'), idx);
+  console.log('✓ index.html');
 }
 
 main().catch(err => {
