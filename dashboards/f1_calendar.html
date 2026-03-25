@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=768">
+<title>F1 2026 Race Calendar</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400;500&family=Playfair+Display:wght@400;700;900&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-font-smoothing: none;
+  -moz-osx-font-smoothing: unset;
+}
+
+body {
+  margin: 0;
+  width: 768px;
+  height: 1024px;
+  overflow: hidden;
+  background: #fff;
+  color: #000;
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.container {
+  width: 100%;
+  height: 100%;
+  padding: 28px 32px 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header */
+.header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+
+.header-left {
+  display: flex;
+  align-items: baseline;
+  gap: 0;
+}
+
+.header-f1 {
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  font-size: 42px;
+  letter-spacing: -1px;
+  line-height: 1;
+}
+
+.header-year {
+  font-family: 'Playfair Display', serif;
+  font-weight: 400;
+  font-size: 42px;
+  letter-spacing: -1px;
+  line-height: 1;
+  margin-left: 10px;
+  color: #444;
+}
+
+.header-right {
+  text-align: right;
+}
+
+.header-subtitle {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #444;
+  margin-top: 2px;
+}
+
+.header-progress {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 300;
+  color: #888;
+  margin-top: 4px;
+}
+
+.divider {
+  border: none;
+  border-top: 1px solid #000;
+  margin: 12px 0 16px;
+}
+
+.divider-light {
+  border: none;
+  border-top: 1px solid #ccc;
+  margin: 12px 0 14px;
+}
+
+/* Next Race */
+.next-race {
+  border: 2px solid #000;
+  padding: 18px 22px 16px;
+  margin-bottom: 16px;
+  flex-shrink: 0;
+}
+
+.next-race-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #888;
+  margin-bottom: 8px;
+}
+
+.next-race-name {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: 26px;
+  line-height: 1.15;
+  margin-bottom: 8px;
+}
+
+.next-race-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 16px;
+}
+
+.next-race-details {
+  flex: 1;
+}
+
+.next-race-round {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 400;
+  color: #444;
+  margin-bottom: 3px;
+}
+
+.next-race-location {
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  color: #000;
+  margin-bottom: 2px;
+}
+
+.next-race-circuit {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 300;
+  color: #444;
+}
+
+.next-race-date-block {
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.next-race-dates {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: -0.5px;
+}
+
+.next-race-session {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 300;
+  color: #444;
+  margin-top: 6px;
+  line-height: 1.4;
+}
+
+.next-session-label {
+  color: #888;
+  font-size: 9px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.countdown {
+  margin-top: 10px;
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+}
+
+.cd-unit {
+  text-align: center;
+}
+
+.cd-num {
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  font-size: 28px;
+  line-height: 1;
+  color: #000;
+}
+
+.cd-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 8px;
+  font-weight: 500;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: #888;
+  margin-top: 2px;
+}
+
+/* Upcoming */
+.upcoming-section {
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.upcoming-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #888;
+  margin-bottom: 10px;
+}
+
+.upcoming-table {
+  width: 100%;
+  border-collapse: collapse;
+  flex: 1;
+}
+
+.upcoming-table thead th {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: #888;
+  text-align: left;
+  padding: 0 0 6px 0;
+  border-bottom: 1px solid #000;
+}
+
+.upcoming-table thead th:last-child {
+  text-align: right;
+}
+
+.upcoming-table tbody td {
+  padding: 7px 0;
+  border-bottom: 1px solid #e0e0e0;
+  vertical-align: middle;
+}
+
+.upcoming-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.col-round {
+  width: 36px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 400;
+  color: #888;
+}
+
+.col-name {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: 13.5px;
+}
+
+.col-location {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 300;
+  color: #444;
+  padding-left: 12px;
+}
+
+.col-date {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 400;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.more-races {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 300;
+  color: #888;
+  text-align: center;
+  margin-top: 8px;
+  flex-shrink: 0;
+}
+
+/* Footer */
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: auto;
+  padding-top: 10px;
+  border-top: 1px solid #ccc;
+  flex-shrink: 0;
+}
+
+.footer-left,
+.footer-right {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  font-weight: 300;
+  color: #888;
+}
+
+/* Loading / Error */
+.loading-state {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: #888;
+  letter-spacing: 1px;
+}
+
+.error-state {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: #444;
+  text-align: center;
+  line-height: 1.6;
+}
+
+.completed-marker {
+  color: #aaa;
+}
+
+.completed-marker .col-name,
+.completed-marker .col-location {
+  color: #aaa;
+}
+</style>
+</head>
+<body>
+<div class="container" id="app">
+  <div class="loading-state" id="loading">LOADING RACE DATA</div>
+</div>
+
+<script>
+(async function() {
+  const YEAR = 2026;
+  const now = new Date();
+
+  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+  function formatDate(dateStr) {
+    const d = new Date(dateStr);
+    return months[d.getUTCMonth()] + ' ' + d.getUTCDate();
+  }
+
+  function formatDateRange(startStr, endStr) {
+    const s = new Date(startStr);
+    const e = new Date(endStr);
+    const sMonth = months[s.getUTCMonth()];
+    const eMonth = months[e.getUTCMonth()];
+    const sDay = s.getUTCDate();
+    const eDay = e.getUTCDate();
+    if (sMonth === eMonth) {
+      return sMonth + ' ' + sDay + ' \u2013 ' + eDay;
+    }
+    return sMonth + ' ' + sDay + ' \u2013 ' + eMonth + ' ' + eDay;
+  }
+
+  function formatSessionTime(dateStr) {
+    const d = new Date(dateStr);
+    const h = String(d.getUTCHours()).padStart(2, '0');
+    const m = String(d.getUTCMinutes()).padStart(2, '0');
+    return months[d.getUTCMonth()] + ' ' + d.getUTCDate() + ', ' + h + ':' + m + ' UTC';
+  }
+
+  function formatTimestamp() {
+    const d = new Date();
+    const y = d.getUTCFullYear();
+    const mo = String(d.getUTCMonth() + 1).padStart(2, '0');
+    const da = String(d.getUTCDate()).padStart(2, '0');
+    const h = String(d.getUTCHours()).padStart(2, '0');
+    const mi = String(d.getUTCMinutes()).padStart(2, '0');
+    return y + '-' + mo + '-' + da + ' ' + h + ':' + mi + ' UTC';
+  }
+
+  async function fetchJSON(url) {
+    const resp = await fetch(url);
+    if (!resp.ok) throw new Error('API returned ' + resp.status);
+    return resp.json();
+  }
+
+  function render(meetings, sessions) {
+    // Filter out testing meetings
+    const races = meetings
+      .filter(m => !(/test/i.test(m.meeting_name || '')))
+      .sort((a, b) => new Date(a.date_start) - new Date(b.date_start));
+
+    // Group sessions by meeting_key
+    const sessionMap = {};
+    sessions.forEach(s => {
+      if (!sessionMap[s.meeting_key]) sessionMap[s.meeting_key] = [];
+      sessionMap[s.meeting_key].push(s);
+    });
+
+    // Sort sessions within each meeting
+    Object.values(sessionMap).forEach(arr =>
+      arr.sort((a, b) => new Date(a.date_start) - new Date(b.date_start))
+    );
+
+    // Determine completed vs upcoming
+    const completed = [];
+    const upcoming = [];
+
+    races.forEach(race => {
+      const endDate = new Date(race.date_start);
+      // Use the last session end, or add 3 days to start as estimate
+      const raceSessions = sessionMap[race.meeting_key] || [];
+      let raceEnd = endDate;
+      if (raceSessions.length > 0) {
+        const lastSession = raceSessions[raceSessions.length - 1];
+        raceEnd = new Date(lastSession.date_end || lastSession.date_start);
+      } else {
+        raceEnd = new Date(endDate.getTime() + 3 * 86400000);
+      }
+
+      if (raceEnd < now) {
+        completed.push(race);
+      } else {
+        upcoming.push(race);
+      }
+    });
+
+    const totalRaces = races.length;
+    const completedCount = completed.length;
+
+    // Next race
+    const nextRace = upcoming[0] || null;
+    const futureRaces = upcoming.slice(1);
+
+    // Find next session for the next race
+    let nextSession = null;
+    if (nextRace) {
+      const raceSessions = sessionMap[nextRace.meeting_key] || [];
+      nextSession = raceSessions.find(s => new Date(s.date_start) > now) || null;
+    }
+
+    // Find round numbers
+    const roundMap = {};
+    races.forEach((r, i) => { roundMap[r.meeting_key] = i + 1; });
+
+    // Build HTML
+    const app = document.getElementById('app');
+
+    // Calculate how many upcoming rows we can fit
+    // Header ~70px, divider ~28px, next-race ~170px, upcoming label ~25px, table header ~25px, footer ~35px, more-line ~20px, margins ~30px
+    // Total overhead: ~403px. Available for rows: 1024 - 403 = ~621px. Each row ~31px.
+    const maxRows = 12;
+    const visibleFuture = futureRaces.slice(0, maxRows);
+    const remainingCount = futureRaces.length - visibleFuture.length;
+
+    let html = '';
+
+    // Header
+    html += '<div class="header">';
+    html += '<div>';
+    html += '<div class="header-left">';
+    html += '<span class="header-f1">F1</span>';
+    html += '<span class="header-year">' + YEAR + '</span>';
+    html += '</div>';
+    html += '<div class="header-subtitle">RACE CALENDAR</div>';
+    html += '</div>';
+    html += '<div class="header-right">';
+    html += '<div class="header-progress">' + completedCount + ' of ' + totalRaces + ' races complete</div>';
+    html += '</div>';
+    html += '</div>';
+
+    html += '<hr class="divider">';
+
+    // Next Race
+    if (nextRace) {
+      const round = roundMap[nextRace.meeting_key];
+      const raceSessions = sessionMap[nextRace.meeting_key] || [];
+      let dateRange = formatDate(nextRace.date_start);
+      if (raceSessions.length > 1) {
+        const first = raceSessions[0];
+        const last = raceSessions[raceSessions.length - 1];
+        dateRange = formatDateRange(first.date_start, last.date_start);
+      }
+
+      html += '<div class="next-race">';
+      html += '<div class="next-race-label">NEXT RACE</div>';
+      html += '<div class="next-race-name">' + escapeHtml(nextRace.meeting_name) + '</div>';
+      html += '<div class="next-race-meta">';
+      html += '<div class="next-race-details">';
+      html += '<div class="next-race-round">Round ' + round + '</div>';
+      html += '<div class="next-race-location">' + escapeHtml(nextRace.location || '') + (nextRace.country_name ? ', ' + escapeHtml(nextRace.country_name) : '') + '</div>';
+      if (nextRace.circuit_short_name) {
+        html += '<div class="next-race-circuit">' + escapeHtml(nextRace.circuit_short_name) + '</div>';
+      }
+      html += '</div>';
+      html += '<div class="next-race-date-block">';
+      html += '<div class="next-race-dates">' + dateRange + '</div>';
+      if (nextSession) {
+        html += '<div class="next-race-session">';
+        html += '<span class="next-session-label">NEXT SESSION</span><br>';
+        html += escapeHtml(nextSession.session_name || 'Session') + '<br>';
+        html += formatSessionTime(nextSession.date_start);
+        html += '</div>';
+
+        // Countdown to next session (hour resolution)
+        const diff = new Date(nextSession.date_start) - now;
+        if (diff > 0) {
+          const totalHrs = Math.floor(diff / 3600000);
+          const days = Math.floor(totalHrs / 24);
+          const hrs = totalHrs % 24;
+          html += '<div class="countdown">';
+          html += '<div class="cd-unit"><div class="cd-num">' + days + '</div><div class="cd-label">days</div></div>';
+          html += '<div class="cd-unit"><div class="cd-num">' + hrs + '</div><div class="cd-label">hrs</div></div>';
+          html += '</div>';
+        }
+      }
+      html += '</div>';
+      html += '</div>';
+      html += '</div>';
+    }
+
+    // Upcoming
+    if (visibleFuture.length > 0) {
+      html += '<div class="upcoming-section">';
+      html += '<div class="upcoming-label">UPCOMING</div>';
+      html += '<table class="upcoming-table">';
+      html += '<thead><tr>';
+      html += '<th style="width:36px">#</th>';
+      html += '<th>RACE</th>';
+      html += '<th>LOCATION</th>';
+      html += '<th style="text-align:right">DATE</th>';
+      html += '</tr></thead>';
+      html += '<tbody>';
+
+      visibleFuture.forEach(race => {
+        const round = roundMap[race.meeting_key];
+        const raceSessions = sessionMap[race.meeting_key] || [];
+        let dateRange = formatDate(race.date_start);
+        if (raceSessions.length > 1) {
+          const last = raceSessions[raceSessions.length - 1];
+          dateRange = formatDateRange(race.date_start, last.date_start);
+        }
+        const location = race.location || '';
+        const country = race.country_name ? race.country_name : '';
+        const locStr = location + (country ? ', ' + country : '');
+
+        html += '<tr>';
+        html += '<td class="col-round">' + String(round).padStart(2, '0') + '</td>';
+        html += '<td class="col-name">' + escapeHtml(race.meeting_name) + '</td>';
+        html += '<td class="col-location">' + escapeHtml(locStr) + '</td>';
+        html += '<td class="col-date">' + dateRange + '</td>';
+        html += '</tr>';
+      });
+
+      html += '</tbody></table>';
+
+      if (remainingCount > 0) {
+        html += '<div class="more-races">\u2026 and ' + remainingCount + ' more</div>';
+      }
+
+      html += '</div>';
+    }
+
+    // Footer
+    html += '<div class="footer">';
+    html += '<div class="footer-left">openf1.org \u00b7 ' + YEAR + '</div>';
+    html += '<div class="footer-right">' + formatTimestamp() + '</div>';
+    html += '</div>';
+
+    app.innerHTML = html;
+    document.body.setAttribute('data-loaded', 'true');
+  }
+
+  function escapeHtml(str) {
+    return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  function renderError(msg) {
+    const app = document.getElementById('app');
+    app.innerHTML = '<div class="error-state">' + escapeHtml(msg) + '</div>' +
+      '<div class="footer"><div class="footer-left">openf1.org \u00b7 ' + YEAR + '</div>' +
+      '<div class="footer-right">' + formatTimestamp() + '</div></div>';
+    document.body.setAttribute('data-loaded', 'true');
+  }
+
+  try {
+    const [meetings, sessions] = await Promise.all([
+      fetchJSON('https://api.openf1.org/v1/meetings?year=' + YEAR),
+      fetchJSON('https://api.openf1.org/v1/sessions?year=' + YEAR)
+    ]);
+
+    if (!Array.isArray(meetings) || meetings.length === 0) {
+      renderError('No race data available for ' + YEAR + '.\nThe schedule may not yet be published.');
+      return;
+    }
+
+    render(meetings, sessions || []);
+  } catch (err) {
+    renderError('Unable to load race data.\n' + (err.message || 'Network error'));
+  }
+})();
+</script>
+</body>
+</html>

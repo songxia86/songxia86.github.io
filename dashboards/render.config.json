@@ -5,7 +5,7 @@
       "height": 1024,
       "deviceScaleFactor": 1,
       "colorScheme": "light",
-      "files": ["helloworld.html"]
+      "files": ["f1_drivers.html", "f1_constructors.html", "f1_calendar.html"]
     }
   }
 }

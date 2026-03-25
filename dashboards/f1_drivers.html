@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=768">
+<title>F1 2026 Drivers Championship</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;700&family=Playfair+Display:wght@400;700;900&display=swap');
+
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: none; -moz-osx-font-smoothing: unset; }
+
+body {
+  margin: 0; width: 768px; height: 1024px; overflow: hidden;
+  background: #fff; color: #000;
+  font-family: 'Inter', sans-serif; font-size: 14px; line-height: 1.4;
+}
+
+.page {
+  width: 768px; height: 1024px;
+  padding: 32px 36px 20px; display: flex; flex-direction: column;
+}
+
+.header { display: flex; align-items: baseline; gap: 16px; margin-bottom: 4px; }
+.header-f1 { font-family: 'Playfair Display', serif; font-weight: 900; font-size: 48px; letter-spacing: -1px; line-height: 1; }
+.header-year { font-family: 'Playfair Display', serif; font-weight: 400; font-size: 48px; letter-spacing: -1px; line-height: 1; color: #444; }
+.header-subtitle { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 500; letter-spacing: 3.5px; text-transform: uppercase; color: #444; margin-bottom: 10px; }
+.header-rule { border: none; border-top: 1px solid #000; margin-bottom: 14px; }
+
+table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+thead th {
+  font-family: 'JetBrains Mono', monospace; font-size: 8px; font-weight: 400;
+  letter-spacing: 2px; text-transform: uppercase; color: #888;
+  padding-bottom: 6px; border-bottom: 1px solid #aaa;
+}
+
+.col-pos { width: 44px; }
+.col-name { width: auto; }
+.col-team { width: 180px; }
+.col-pts { width: 64px; text-align: right; }
+
+tbody td {
+  padding: 8px 0; vertical-align: baseline;
+  border-bottom: 1px solid #e8e8e8;
+}
+tbody tr:last-child td { border-bottom: none; }
+
+td.pos {
+  font-family: 'Playfair Display', serif; font-weight: 700;
+  font-size: 18px; color: #000;
+}
+tr.top-three td.pos { font-size: 22px; font-weight: 900; }
+
+td.name { font-family: 'Inter', sans-serif; font-weight: 600; font-size: 14px; color: #000; }
+td.name .first-name { font-weight: 400; color: #555; }
+
+td.team { font-family: 'Inter', sans-serif; font-weight: 400; font-size: 12px; color: #666; }
+
+td.pts {
+  font-family: 'JetBrains Mono', monospace; font-weight: 700;
+  font-size: 14px; text-align: right; color: #000; padding-right: 4px;
+}
+th.col-pts { text-align: right; padding-right: 4px; }
+
+.table-wrap { flex: 1; overflow: hidden; }
+
+.footer {
+  margin-top: auto; padding-top: 8px; border-top: 1px solid #000;
+  display: flex; justify-content: space-between; align-items: baseline;
+}
+.footer span {
+  font-family: 'JetBrains Mono', monospace; font-size: 9px;
+  font-weight: 400; color: #888;
+}
+
+.error-msg { font-family: 'Inter', sans-serif; font-size: 14px; color: #888; padding: 24px 0; text-align: center; }
+.loading-msg { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #888; padding: 32px 0; text-align: center; letter-spacing: 1px; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="header">
+    <span class="header-f1">F1</span>
+    <span class="header-year">2026</span>
+  </div>
+  <div class="header-subtitle">Drivers Championship</div>
+  <hr class="header-rule">
+
+  <div class="table-wrap" id="drivers-container">
+    <div class="loading-msg">Loading standings...</div>
+  </div>
+
+  <div class="footer">
+    <span>openf1.org &middot; 2026</span>
+    <span id="timestamp"></span>
+  </div>
+
+</div>
+
+<script>
+(async function() {
+  const API = 'https://api.openf1.org/v1';
+
+  document.getElementById('timestamp').textContent = (function() {
+    const d = new Date();
+    return d.getUTCFullYear() + '-' + String(d.getUTCMonth()+1).padStart(2,'0') + '-' +
+      String(d.getUTCDate()).padStart(2,'0') + ' ' + String(d.getUTCHours()).padStart(2,'0') + ':' +
+      String(d.getUTCMinutes()).padStart(2,'0') + ' UTC';
+  })();
+
+  async function fetchJSON(url) {
+    const r = await fetch(url); if (!r.ok) throw new Error('HTTP ' + r.status); return r.json();
+  }
+
+  function esc(s) { const d = document.createElement('div'); d.textContent = s || ''; return d.innerHTML; }
+
+  function splitName(full) {
+    if (!full) return { first: '', last: '' };
+    const p = full.trim().split(/\s+/);
+    if (p.length <= 1) return { first: '', last: full };
+    const last = p.pop();
+    return { first: p.join(' '), last };
+  }
+
+  try {
+    const [driversRaw, champ] = await Promise.all([
+      fetchJSON(API + '/drivers?session_key=latest').catch(() => []),
+      fetchJSON(API + '/championship_drivers?session_key=latest').catch(() => [])
+    ]);
+
+    const map = {};
+    (driversRaw || []).forEach(d => { if (d.driver_number != null) map[d.driver_number] = d; });
+
+    const sorted = (champ || []).slice().sort((a, b) => {
+      const pa = a.position_current || 999, pb = b.position_current || 999;
+      return pa !== pb ? pa - pb : (b.points_current || 0) - (a.points_current || 0);
+    });
+
+    const rows = sorted.slice(0, 22);
+    if (!rows.length) {
+      document.getElementById('drivers-container').innerHTML = '<div class="error-msg">Data unavailable</div>';
+    } else {
+      let html = '<table><thead><tr>';
+      html += '<th class="col-pos">Pos</th><th class="col-name">Driver</th>';
+      html += '<th class="col-team">Team</th><th class="col-pts">Pts</th>';
+      html += '</tr></thead><tbody>';
+
+      rows.forEach((e, i) => {
+        const pos = e.position_current || (i + 1);
+        const d = map[e.driver_number] || {};
+        const { first, last } = splitName(d.full_name || e.driver_name || 'Driver #' + e.driver_number);
+        const team = d.team_name || e.team_name || '';
+        const pts = e.points_current != null ? e.points_current : '\u2014';
+        const cls = pos <= 3 ? ' class="top-three"' : '';
+
+        html += '<tr' + cls + '>';
+        html += '<td class="pos">' + pos + '</td>';
+        html += '<td class="name"><span class="first-name">' + esc(first) + ' </span>' + esc(last) + '</td>';
+        html += '<td class="team">' + esc(team) + '</td>';
+        html += '<td class="pts">' + pts + '</td>';
+        html += '</tr>';
+      });
+
+      html += '</tbody></table>';
+      document.getElementById('drivers-container').innerHTML = html;
+    }
+  } catch (e) {
+    document.getElementById('drivers-container').innerHTML = '<div class="error-msg">Data unavailable</div>';
+  }
+
+  document.body.setAttribute('data-loaded', 'true');
+})();
+</script>
+</body>
+</html>

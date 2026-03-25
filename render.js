@@ -1,9 +1,24 @@
 const { chromium } = require('playwright');
 const fs = require('fs');
 const path = require('path');
+const http = require('http');
 
 const DASHBOARDS = path.join(__dirname, 'dashboards');
 const CONFIG_PATH = path.join(DASHBOARDS, 'render.config.json');
+
+function startServer(root) {
+  return new Promise((resolve) => {
+    const server = http.createServer((req, res) => {
+      const filePath = path.join(root, decodeURIComponent(req.url));
+      if (!fs.existsSync(filePath)) { res.writeHead(404); res.end(); return; }
+      const ext = path.extname(filePath);
+      const types = { '.html': 'text/html', '.js': 'application/javascript', '.css': 'text/css', '.json': 'application/json', '.png': 'image/png' };
+      res.writeHead(200, { 'Content-Type': types[ext] || 'application/octet-stream' });
+      fs.createReadStream(filePath).pipe(res);
+    });
+    server.listen(0, '127.0.0.1', () => resolve(server));
+  });
+}
 
 async function main() {
   const { configs } = JSON.parse(fs.readFileSync(CONFIG_PATH, 'utf8'));
@@ -12,6 +27,10 @@ async function main() {
     console.log('No configs defined in render.config.json');
     return;
   }
+
+  const server = await startServer(DASHBOARDS);
+  const port = server.address().port;
+  console.log(`Local server on port ${port}`);
 
   const browser = await chromium.launch();
 
@@ -43,7 +62,14 @@ async function main() {
       const pngPath = path.join(DASHBOARDS, pngName);
 
       const page = await context.newPage();
-      await page.goto(`file://${filePath}`, { waitUntil: 'networkidle' });
+      await page.goto(`http://127.0.0.1:${port}/${file}`, { waitUntil: 'networkidle' });
+
+      // Wait for page to signal data is loaded (30s timeout)
+      await page.waitForFunction(
+        () => document.body.getAttribute('data-loaded') === 'true',
+        { timeout: 30000 }
+      ).catch(() => console.log(`  ⚠ ${file} did not set data-loaded, screenshotting anyway`));
+
       await page.screenshot({ path: pngPath, fullPage: false });
       await page.close();
 
@@ -54,6 +80,7 @@ async function main() {
   }
 
   await browser.close();
+  server.close();
 }
 
 main().catch(err => {
