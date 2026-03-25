@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=768">
 <title>F1 2026 Drivers Championship</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;700&family=Playfair+Display:wght@400;700;900&display=swap');
 
@@ -11,82 +12,124 @@
 
 body {
   margin: 0; width: 768px; height: 1024px; overflow: hidden;
-  background: #fff; color: #000;
-  font-family: 'Inter', sans-serif; font-size: 14px; line-height: 1.4;
+  background: #e8e6e1; color: #000;
+  font-family: 'Inter', sans-serif; font-size: 16px; line-height: 1.3;
 }
 
 .page {
   width: 768px; height: 1024px;
-  padding: 32px 36px 20px; display: flex; flex-direction: column;
+  padding: 16px; display: flex; flex-direction: column;
+  background: #fff; border-radius: 12px; border: 1px solid #d0cec9;
+  box-sizing: border-box;
 }
 
-.header { display: flex; align-items: baseline; gap: 16px; margin-bottom: 4px; }
-.header-f1 { font-family: 'Playfair Display', serif; font-weight: 900; font-size: 36px; letter-spacing: -1px; line-height: 1; }
-.header-year { font-family: 'Playfair Display', serif; font-weight: 400; font-size: 36px; letter-spacing: -1px; line-height: 1; color: #444; }
-.header-subtitle { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 500; letter-spacing: 3.5px; text-transform: uppercase; color: #444; margin-bottom: 10px; }
-.header-rule { border: none; border-top: 1px solid #000; margin-bottom: 14px; }
+/* Header - 60px */
+.header { height: 60px; display: flex; flex-direction: column; justify-content: center; padding: 0 12px; }
+.header-top { display: flex; align-items: baseline; gap: 10px; }
+.header-title { font-family: 'Playfair Display', serif; font-weight: 900; font-size: 32px; letter-spacing: -0.5px; line-height: 1; color: #000; }
+.header-sub { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 3px; text-transform: uppercase; color: #999; margin-top: 4px; }
 
-table { width: 100%; border-collapse: collapse; table-layout: fixed; }
-thead th {
-  font-family: 'JetBrains Mono', monospace; font-size: 8px; font-weight: 400;
-  letter-spacing: 2px; text-transform: uppercase; color: #888;
-  padding-bottom: 6px; border-bottom: 1px solid #aaa;
+/* Leader Card - 90px */
+.leader-card {
+  height: 90px; background: #f4f3f0; border-radius: 8px; border: 1px solid #d0cec9;
+  display: flex; align-items: center; padding: 0 20px; margin: 8px 0 6px 0;
+}
+.leader-pos {
+  font-family: 'Playfair Display', serif; font-size: 40px; font-weight: 900; color: #000;
+  min-width: 60px; display: flex; align-items: center; gap: 6px;
+}
+.leader-pos .fa-trophy { font-size: 18px; color: #000; }
+.leader-info { flex: 1; padding: 0 16px; }
+.leader-badge {
+  display: inline-block; font-family: 'JetBrains Mono', monospace; font-size: 9px; font-weight: 500;
+  text-transform: uppercase; letter-spacing: 1.5px; border: 1px solid #999; border-radius: 10px;
+  padding: 1px 8px; color: #666; margin-bottom: 3px;
+}
+.leader-name { font-family: 'Inter', sans-serif; font-size: 22px; font-weight: 700; color: #000; line-height: 1.2; }
+.leader-name .first { font-weight: 400; color: #555; }
+.leader-team { font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 300; color: #666; margin-top: 1px; }
+.leader-pts {
+  font-family: 'JetBrains Mono', monospace; font-size: 24px; font-weight: 700; color: #fff;
+  background: #000; border-radius: 20px; padding: 4px 18px; white-space: nowrap;
 }
 
-.col-pos { width: 44px; }
-.col-name { width: auto; }
-.col-team { width: 180px; }
-.col-pts { width: 64px; text-align: right; }
-
-tbody td {
-  padding: 5px 0; vertical-align: baseline;
-  border-bottom: 1px solid #e8e8e8;
+/* P2-P3 Cards - 60px each */
+.podium-card {
+  height: 56px; background: #f4f3f0; border-radius: 8px; border: 1px solid #d0cec9;
+  display: flex; align-items: center; padding: 0 18px; margin-bottom: 4px;
 }
-tbody tr:last-child td { border-bottom: none; }
-
-td.pos {
-  font-family: 'Playfair Display', serif; font-weight: 700;
-  font-size: 16px; color: #000;
+.podium-pos {
+  font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 700; color: #000;
+  min-width: 44px; display: flex; align-items: center; gap: 5px;
 }
-tr.top-three td.pos { font-size: 18px; font-weight: 900; }
-
-td.name { font-family: 'Inter', sans-serif; font-weight: 600; font-size: 13px; color: #000; }
-td.name .first-name { font-weight: 400; color: #555; }
-
-td.team { font-family: 'Inter', sans-serif; font-weight: 400; font-size: 11px; color: #666; }
-
-td.pts {
-  font-family: 'JetBrains Mono', monospace; font-weight: 700;
-  font-size: 13px; text-align: right; color: #000; padding-right: 4px;
+.podium-pos .fa-trophy { font-size: 13px; color: #666; }
+.podium-info { flex: 1; padding: 0 12px; }
+.podium-name { font-family: 'Inter', sans-serif; font-size: 18px; font-weight: 700; color: #000; line-height: 1.2; }
+.podium-name .first { font-weight: 400; color: #555; }
+.podium-team { font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 300; color: #666; }
+.podium-pts {
+  font-family: 'JetBrains Mono', monospace; font-size: 20px; font-weight: 700; color: #000;
+  border: 1.5px solid #000; border-radius: 20px; padding: 2px 14px; white-space: nowrap;
 }
-th.col-pts { text-align: right; padding-right: 4px; }
 
-.table-wrap { flex: 1; overflow: hidden; }
+/* Compact rows P4-P22 */
+.rows-container { flex: 1; overflow: hidden; padding: 4px 0; }
+.driver-row {
+  height: 34px; display: flex; align-items: center; padding: 0 12px;
+  border-bottom: 1px solid #e8e6e1;
+}
+.driver-row:last-child { border-bottom: none; }
+.row-pos {
+  font-family: 'JetBrains Mono', monospace; font-size: 18px; font-weight: 500; color: #333;
+  min-width: 32px; text-align: right; padding-right: 8px;
+}
+.row-change {
+  min-width: 28px; font-size: 11px; font-family: 'JetBrains Mono', monospace;
+  text-align: center; color: #999;
+}
+.row-change .up { color: #333; }
+.row-change .down { color: #999; }
+.row-change .same { color: #bbb; }
+.row-name {
+  flex: 1; font-family: 'Inter', sans-serif; font-size: 16px; font-weight: 700; color: #000;
+  padding: 0 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.row-name .first { font-weight: 400; color: #666; font-size: 14px; }
+.row-team {
+  width: 160px; font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 300; color: #999;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.row-pts {
+  font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 700; color: #000;
+  border: 1px solid #999; border-radius: 12px; padding: 1px 10px; margin-left: 8px;
+  white-space: nowrap; text-align: center; min-width: 44px;
+}
 
+/* Footer - 35px */
 .footer {
-  margin-top: auto; padding-top: 8px; border-top: 1px solid #000;
-  display: flex; justify-content: space-between; align-items: baseline;
+  height: 35px; display: flex; justify-content: space-between; align-items: center;
+  background: #f4f3f0; border-radius: 0 0 10px 10px;
+  margin: auto -16px -16px -16px; padding: 0 20px;
 }
 .footer span {
-  font-family: 'JetBrains Mono', monospace; font-size: 9px;
-  font-weight: 400; color: #888;
+  font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 400; color: #999;
 }
 
-.error-msg { font-family: 'Inter', sans-serif; font-size: 14px; color: #888; padding: 24px 0; text-align: center; }
-.loading-msg { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #888; padding: 32px 0; text-align: center; letter-spacing: 1px; }
+.error-msg { font-family: 'Inter', sans-serif; font-size: 16px; color: #999; padding: 24px 0; text-align: center; }
+.loading-msg { font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #999; padding: 32px 0; text-align: center; letter-spacing: 1px; }
 </style>
 </head>
 <body>
 <div class="page">
 
   <div class="header">
-    <span class="header-f1">F1</span>
-    <span class="header-year">2026</span>
+    <div class="header-top">
+      <span class="header-title">F1 2026</span>
+    </div>
+    <div class="header-sub">Drivers Championship</div>
   </div>
-  <div class="header-subtitle">Drivers Championship</div>
-  <hr class="header-rule">
 
-  <div class="table-wrap" id="drivers-container">
+  <div id="drivers-container">
     <div class="loading-msg">Loading standings...</div>
   </div>
 
@@ -122,6 +165,19 @@ th.col-pts { text-align: right; padding-right: 4px; }
     return { first: p.join(' '), last };
   }
 
+  function posChange(entry) {
+    const start = entry.position_start;
+    const current = entry.position_current;
+    if (start == null || current == null) return 0;
+    return start - current;
+  }
+
+  function changeHTML(change) {
+    if (change > 0) return '<span class="up">\u25B2' + change + '</span>';
+    if (change < 0) return '<span class="down">\u25BC' + Math.abs(change) + '</span>';
+    return '<span class="same">\u2014</span>';
+  }
+
   try {
     const [driversRaw, champ] = await Promise.all([
       fetchJSON(API + '/drivers?session_key=latest').catch(() => []),
@@ -140,28 +196,65 @@ th.col-pts { text-align: right; padding-right: 4px; }
     if (!rows.length) {
       document.getElementById('drivers-container').innerHTML = '<div class="error-msg">Data unavailable</div>';
     } else {
-      let html = '<table><thead><tr>';
-      html += '<th class="col-pos">Pos</th><th class="col-name">Driver</th>';
-      html += '<th class="col-team">Team</th><th class="col-pts">Pts</th>';
-      html += '</tr></thead><tbody>';
+      let html = '';
 
-      rows.forEach((e, i) => {
-        const pos = e.position_current || (i + 1);
+      // P1 - Leader Card
+      const e1 = rows[0];
+      const d1 = map[e1.driver_number] || {};
+      const n1 = splitName(d1.full_name || e1.driver_name || 'Driver #' + e1.driver_number);
+      const team1 = d1.team_name || e1.team_name || '';
+      const pts1 = e1.points_current != null ? e1.points_current : '\u2014';
+
+      html += '<div class="leader-card">';
+      html += '<div class="leader-pos"><i class="fa-solid fa-trophy"></i>1</div>';
+      html += '<div class="leader-info">';
+      html += '<div class="leader-badge">Leader</div>';
+      html += '<div class="leader-name"><span class="first">' + esc(n1.first) + ' </span>' + esc(n1.last) + '</div>';
+      html += '<div class="leader-team">' + esc(team1) + '</div>';
+      html += '</div>';
+      html += '<div class="leader-pts">' + pts1 + '</div>';
+      html += '</div>';
+
+      // P2-P3 Cards
+      for (let i = 1; i < 3 && i < rows.length; i++) {
+        const e = rows[i];
         const d = map[e.driver_number] || {};
-        const { first, last } = splitName(d.full_name || e.driver_name || 'Driver #' + e.driver_number);
+        const n = splitName(d.full_name || e.driver_name || 'Driver #' + e.driver_number);
         const team = d.team_name || e.team_name || '';
         const pts = e.points_current != null ? e.points_current : '\u2014';
-        const cls = pos <= 3 ? ' class="top-three"' : '';
+        const pos = e.position_current || (i + 1);
 
-        html += '<tr' + cls + '>';
-        html += '<td class="pos">' + pos + '</td>';
-        html += '<td class="name"><span class="first-name">' + esc(first) + ' </span>' + esc(last) + '</td>';
-        html += '<td class="team">' + esc(team) + '</td>';
-        html += '<td class="pts">' + pts + '</td>';
-        html += '</tr>';
-      });
+        html += '<div class="podium-card">';
+        html += '<div class="podium-pos"><i class="fa-solid fa-trophy"></i>' + pos + '</div>';
+        html += '<div class="podium-info">';
+        html += '<div class="podium-name"><span class="first">' + esc(n.first) + ' </span>' + esc(n.last) + '</div>';
+        html += '<div class="podium-team">' + esc(team) + '</div>';
+        html += '</div>';
+        html += '<div class="podium-pts">' + pts + '</div>';
+        html += '</div>';
+      }
 
-      html += '</tbody></table>';
+      // P4-P22 Compact Rows
+      html += '<div class="rows-container">';
+      for (let i = 3; i < rows.length; i++) {
+        const e = rows[i];
+        const d = map[e.driver_number] || {};
+        const n = splitName(d.full_name || e.driver_name || 'Driver #' + e.driver_number);
+        const team = d.team_name || e.team_name || '';
+        const pts = e.points_current != null ? e.points_current : '\u2014';
+        const pos = e.position_current || (i + 1);
+        const change = posChange(e);
+
+        html += '<div class="driver-row">';
+        html += '<div class="row-pos">' + pos + '</div>';
+        html += '<div class="row-change">' + changeHTML(change) + '</div>';
+        html += '<div class="row-name"><span class="first">' + esc(n.first) + ' </span>' + esc(n.last) + '</div>';
+        html += '<div class="row-team">' + esc(team) + '</div>';
+        html += '<div class="row-pts">' + pts + '</div>';
+        html += '</div>';
+      }
+      html += '</div>';
+
       document.getElementById('drivers-container').innerHTML = html;
     }
   } catch (e) {
