@@ -6,7 +6,7 @@
 <title>F1 2026 Race Calendar</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400;500;700&family=Playfair+Display:wght@400;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;700&family=Playfair+Display:wght@400;700;900&display=swap');
 
 * {
   margin: 0;
@@ -22,31 +22,34 @@ body {
   height: 1024px;
   overflow: hidden;
   background: #e8e6e1;
-  color: #333;
+  color: #000;
   font-family: 'Inter', sans-serif;
   font-size: 14px;
   line-height: 1.4;
 }
 
 .container {
-  width: 100%;
-  height: 100%;
-  padding: 16px;
+  width: 768px;
+  height: 1024px;
+  padding: 20px;
   display: flex;
   flex-direction: column;
   background: #fff;
   border-radius: 12px;
   border: 1px solid #d0cec9;
+  box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
 }
 
-/* Header ~55px */
+/* Header */
 .header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 6px 12px 8px;
+  padding: 0 4px;
+  margin-bottom: 12px;
   flex-shrink: 0;
-  height: 55px;
 }
 
 .header-left {
@@ -58,7 +61,8 @@ body {
 .header-title {
   font-family: 'Playfair Display', serif;
   font-weight: 900;
-  font-size: 32px;
+  font-size: 36px;
+  letter-spacing: -1px;
   line-height: 1;
   color: #000;
 }
@@ -70,6 +74,7 @@ body {
   letter-spacing: 3px;
   text-transform: uppercase;
   color: #666;
+  margin-top: 4px;
 }
 
 .progress-pill {
@@ -83,7 +88,7 @@ body {
   white-space: nowrap;
 }
 
-/* Next Race Hero ~130px */
+/* Next Race Hero ~190px */
 .next-race {
   background: #f4f3f0;
   border: 1px solid #d0cec9;
@@ -94,6 +99,7 @@ body {
   display: flex;
   justify-content: space-between;
   gap: 16px;
+  min-height: 170px;
 }
 
 .next-race-left {
@@ -144,6 +150,35 @@ body {
   color: #555;
 }
 
+.sessions-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 12px;
+  margin-top: 8px;
+}
+
+.session-item {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 400;
+  color: #555;
+  white-space: nowrap;
+}
+
+.session-item .s-name {
+  font-weight: 500;
+  color: #333;
+}
+
+.session-item.is-next {
+  font-weight: 600;
+  color: #000;
+}
+
+.session-item.is-next .s-name {
+  color: #000;
+}
+
 .next-race-right {
   flex-shrink: 0;
   text-align: right;
@@ -188,103 +223,103 @@ body {
   margin-top: 2px;
 }
 
-/* Upcoming Races */
-.upcoming-section {
+/* Snake Timeline */
+.snake-section {
   flex: 1;
   overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  padding: 0 12px;
+  padding: 4px 8px 0;
+  position: relative;
 }
 
-.upcoming-row {
+.snake-grid {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.snake-chevron {
+  position: absolute;
+  z-index: 2;
+  color: #000;
+  font-size: 18px;
   display: flex;
   align-items: center;
-  height: 38px;
-  border-bottom: 1px solid #e8e6e1;
+  justify-content: center;
+  pointer-events: none;
 }
 
-.upcoming-row:last-child {
-  border-bottom: none;
+.snake-tile {
+  width: 210px;
+  height: 60px;
+  background: #fff;
+  border: 1px solid #d0cec9;
+  border-radius: 6px;
+  position: absolute;
+  padding: 6px 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  z-index: 1;
 }
 
-.row-round {
-  width: 42px;
+.snake-tile.is-completed {
+  opacity: 0.45;
+}
+
+.snake-tile.is-next-upcoming {
+  border: 2px solid #000;
+}
+
+.tile-round {
+  position: absolute;
+  top: 4px;
+  left: 8px;
   font-family: 'JetBrains Mono', monospace;
-  font-size: 14px;
+  font-size: 11px;
   font-weight: 400;
   color: #999;
-  flex-shrink: 0;
+  line-height: 1;
 }
 
-.row-name {
-  flex: 1;
-  font-family: 'Playfair Display', serif;
-  font-weight: 700;
-  font-size: 16px;
+.tile-name {
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 14px;
   color: #000;
+  line-height: 1.15;
+  text-align: center;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  display: flex;
-  align-items: center;
-  gap: 8px;
+  margin-top: 2px;
 }
 
-.sprint-pill {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 8px;
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  color: #666;
-  border: 1px solid #666;
-  border-radius: 8px;
-  padding: 1px 6px;
-  white-space: nowrap;
-  flex-shrink: 0;
-}
-
-.row-date {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 13px;
-  font-weight: 400;
-  color: #555;
-  text-align: right;
-  white-space: nowrap;
-  flex-shrink: 0;
-  margin-left: 12px;
-}
-
-.more-races {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 12px;
-  font-weight: 300;
-  color: #999;
-  text-align: center;
-  padding: 6px 0;
-  flex-shrink: 0;
-}
-
-/* Footer ~35px */
-.footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 16px;
-  background: #f4f3f0;
-  border-radius: 0 0 8px 8px;
-  margin: auto -16px -16px;
-  flex-shrink: 0;
-  height: 35px;
-}
-
-.footer-left,
-.footer-right {
+.tile-date {
   font-family: 'JetBrains Mono', monospace;
   font-size: 11px;
-  font-weight: 300;
-  color: #999;
+  font-weight: 400;
+  color: #666;
+  text-align: center;
+  line-height: 1;
+  margin-top: 2px;
+}
+
+.sprint-badge {
+  position: absolute;
+  top: 4px;
+  right: 5px;
+  width: 14px;
+  height: 14px;
+  background: #000;
+  color: #fff;
+  border-radius: 50%;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 8px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
 }
 
 /* Loading / Error */
@@ -310,50 +345,71 @@ body {
   text-align: center;
   line-height: 1.6;
 }
+
+.timestamp {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 400;
+  color: #bbb;
+  position: absolute;
+  bottom: 8px;
+  right: 16px;
+}
 </style>
 </head>
 <body>
 <div class="container" id="app">
   <div class="loading-state" id="loading">LOADING RACE DATA</div>
 </div>
+<span class="timestamp" id="timestamp"></span>
 
 <script>
 (async function() {
-  const YEAR = 2026;
-  const now = new Date();
+  document.getElementById('timestamp').textContent = (function() {
+    var d = new Date();
+    return d.getUTCFullYear() + '-' + String(d.getUTCMonth()+1).padStart(2,'0') + '-' +
+      String(d.getUTCDate()).padStart(2,'0') + ' ' + String(d.getUTCHours()).padStart(2,'0') + ':' +
+      String(d.getUTCMinutes()).padStart(2,'0') + ' UTC';
+  })();
 
-  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  var YEAR = 2026;
+  var now = new Date();
+
+  var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 
   function formatDate(dateStr) {
-    const d = new Date(dateStr);
+    var d = new Date(dateStr);
     return months[d.getUTCMonth()] + ' ' + d.getUTCDate();
   }
 
   function formatDateRange(startStr, endStr) {
-    const s = new Date(startStr);
-    const e = new Date(endStr);
-    const sMonth = months[s.getUTCMonth()];
-    const eMonth = months[e.getUTCMonth()];
-    const sDay = s.getUTCDate();
-    const eDay = e.getUTCDate();
+    var s = new Date(startStr);
+    var e = new Date(endStr);
+    var sMonth = months[s.getUTCMonth()];
+    var eMonth = months[e.getUTCMonth()];
+    var sDay = s.getUTCDate();
+    var eDay = e.getUTCDate();
     if (sMonth === eMonth) {
-      return sMonth + ' ' + sDay + ' \u2013 ' + eDay;
+      return sMonth + ' ' + sDay + '\u2013' + eDay;
     }
-    return sMonth + ' ' + sDay + ' \u2013 ' + eMonth + ' ' + eDay;
+    return sMonth + ' ' + sDay + '\u2013' + eMonth + ' ' + eDay;
   }
 
-  function formatTimestamp() {
-    const d = new Date();
-    const y = d.getUTCFullYear();
-    const mo = String(d.getUTCMonth() + 1).padStart(2, '0');
-    const da = String(d.getUTCDate()).padStart(2, '0');
-    const h = String(d.getUTCHours()).padStart(2, '0');
-    const mi = String(d.getUTCMinutes()).padStart(2, '0');
-    return y + '-' + mo + '-' + da + ' ' + h + ':' + mi + ' UTC';
+  function formatCompactDateRange(startStr, endStr) {
+    var s = new Date(startStr);
+    var e = new Date(endStr);
+    var sMonth = months[s.getUTCMonth()];
+    var eMonth = months[e.getUTCMonth()];
+    var sDay = s.getUTCDate();
+    var eDay = e.getUTCDate();
+    if (sMonth === eMonth) {
+      return sMonth + ' ' + sDay + '\u2013' + eDay;
+    }
+    return sMonth + ' ' + sDay + '\u2013' + eMonth + ' ' + eDay;
   }
 
   async function fetchJSON(url) {
-    const resp = await fetch(url);
+    var resp = await fetch(url);
     if (!resp.ok) throw new Error('API returned ' + resp.status);
     return resp.json();
   }
@@ -413,17 +469,18 @@ body {
 
     // Next race
     var nextRace = upcoming[0] || null;
-    var futureRaces = upcoming.slice(1);
 
     // Round map
     var roundMap = {};
     races.forEach(function(r, i) { roundMap[r.meeting_key] = i + 1; });
 
-    var app = document.getElementById('app');
-    var maxRows = 24;
-    var visibleFuture = futureRaces.slice(0, maxRows);
-    var remainingCount = futureRaces.length - visibleFuture.length;
+    // Build all races for snake grid
+    var allForSnake = races;
 
+    // Determine the next-race key for highlight in the snake
+    var nextRaceKey = nextRace ? nextRace.meeting_key : null;
+
+    var app = document.getElementById('app');
     var html = '';
 
     // Header
@@ -435,7 +492,7 @@ body {
     html += '<div class="progress-pill">' + completedCount + '/' + totalRaces + '</div>';
     html += '</div>';
 
-    // Next Race Hero
+    // Next Race Hero Card
     if (nextRace) {
       var round = roundMap[nextRace.meeting_key];
       var raceSessions = sessionMap[nextRace.meeting_key] || [];
@@ -449,7 +506,7 @@ body {
       var loc = escapeHtml(nextRace.location || '');
       if (nextRace.country_name) loc += ', ' + escapeHtml(nextRace.country_name);
 
-      // Countdown to next session
+      // Find next upcoming session
       var nextSession = raceSessions.find(function(s) { return new Date(s.date_start) > now; }) || null;
 
       html += '<div class="next-race">';
@@ -461,6 +518,26 @@ body {
       html += '</div>';
       html += '<div class="next-race-name">' + escapeHtml(nextRace.meeting_name) + '</div>';
       html += '<div class="next-race-location"><i class="fa-solid fa-location-dot" style="font-size:12px;color:#666;margin-right:4px"></i>' + loc + '</div>';
+
+      // Session schedule in Seattle time
+      var displaySessions = raceSessions.filter(function(s) {
+        var n = s.session_name || '';
+        return ['Practice 1','Practice 2','Practice 3','Qualifying','Sprint Qualifying','Sprint','Race'].indexOf(n) >= 0;
+      });
+      if (displaySessions.length) {
+        var sessionLabels = {'Practice 1':'FP1','Practice 2':'FP2','Practice 3':'FP3','Qualifying':'QUAL','Sprint Qualifying':'SQ','Sprint':'SPRINT','Race':'RACE'};
+        html += '<div class="sessions-list">';
+        displaySessions.forEach(function(s) {
+          var d = new Date(s.date_start);
+          var seattleStr = d.toLocaleString('en-US', {timeZone:'America/Los_Angeles', weekday:'short', hour:'numeric', minute:'2-digit', hour12:true});
+          var label = sessionLabels[s.session_name] || s.session_name;
+          var isNext = nextSession && s.session_key === nextSession.session_key;
+          html += '<span class="session-item' + (isNext ? ' is-next' : '') + '">';
+          html += '<span class="s-name">' + label + '</span> ' + seattleStr;
+          html += '</span>';
+        });
+        html += '</div>';
+      }
       html += '</div>';
 
       html += '<div class="next-race-right">';
@@ -481,54 +558,113 @@ body {
       html += '</div>';
     }
 
-    // Upcoming Races
-    if (visibleFuture.length > 0) {
-      html += '<div class="upcoming-section">';
+    // Snaking Timeline with D3 path
+    var cols = 3;
+    var tileW = 210, tileH = 60, gapX = 14, gapY = 18;
+    var gridWidth = cols * tileW + (cols - 1) * gapX;
+    var totalRows = Math.ceil(allForSnake.length / cols);
+    var gridHeight = totalRows * tileH + (totalRows - 1) * gapY;
+    var gridPadLeft = Math.floor((736 - 16 - gridWidth) / 2); // center within snake-section
 
-      visibleFuture.forEach(function(race) {
-        var round = roundMap[race.meeting_key];
-        var raceSessions = sessionMap[race.meeting_key] || [];
-        var dateRange = formatDate(race.date_start);
-        if (raceSessions.length > 1) {
-          var last = raceSessions[raceSessions.length - 1];
-          dateRange = formatDateRange(race.date_start, last.date_start);
-        }
-        var sprintWeekend = isSprint(raceSessions);
+    html += '<div class="snake-section">';
+    html += '<div class="snake-grid" id="snake-grid">';
 
-        html += '<div class="upcoming-row">';
-        html += '<div class="row-round">' + String(round).padStart(2, '0') + '</div>';
-        html += '<div class="row-name">';
-        html += '<span>' + escapeHtml(race.meeting_name) + '</span>';
-        if (sprintWeekend) {
-          html += '<span class="sprint-pill">SPRINT</span>';
-        }
-        html += '</div>';
-        html += '<div class="row-date">' + dateRange + '</div>';
-        html += '</div>';
-      });
 
-      if (remainingCount > 0) {
-        html += '<div class="more-races">\u2026 and ' + remainingCount + ' more</div>';
+    // Render tiles with absolute positioning
+    allForSnake.forEach(function(race, i) {
+      var row = Math.floor(i / cols);
+      var colInRow = i % cols;
+      var isReversed = row % 2 === 1;
+      var col = isReversed ? (cols - 1 - colInRow) : colInRow;
+
+      var x = gridPadLeft + col * (tileW + gapX);
+      var y = row * (tileH + gapY);
+
+      var rnd = roundMap[race.meeting_key];
+      var raceSess = sessionMap[race.meeting_key] || [];
+      var sprintWeekend = isSprint(raceSess);
+
+      // Determine date range for tile
+      var tileDate = formatDate(race.date_start);
+      if (raceSess.length > 1) {
+        var lastS = raceSess[raceSess.length - 1];
+        tileDate = formatCompactDateRange(raceSess[0].date_start, lastS.date_start);
       }
 
-      html += '</div>';
-    }
+      // Is completed?
+      var raceEnd;
+      if (raceSess.length > 0) {
+        var lastSess = raceSess[raceSess.length - 1];
+        raceEnd = new Date(lastSess.date_end || lastSess.date_start);
+      } else {
+        raceEnd = new Date(new Date(race.date_start).getTime() + 3 * 86400000);
+      }
+      var isCompleted = raceEnd < now;
+      var isNextUpcoming = race.meeting_key === nextRaceKey;
 
-    // Footer
-    html += '<div class="footer">';
-    html += '<div class="footer-left">openf1.org \u00b7 ' + YEAR + '</div>';
-    html += '<div class="footer-right">' + formatTimestamp() + '</div>';
-    html += '</div>';
+      var tileClass = 'snake-tile';
+      if (isCompleted) tileClass += ' is-completed';
+      if (isNextUpcoming) tileClass += ' is-next-upcoming';
+
+      var tileName = escapeHtml((race.meeting_name || '').replace('Grand Prix', 'GP'));
+
+      html += '<div class="' + tileClass + '" style="left:' + x + 'px;top:' + y + 'px;">';
+      html += '<span class="tile-round">' + String(rnd).padStart(2, '0') + '</span>';
+      if (sprintWeekend) {
+        html += '<span class="sprint-badge">S</span>';
+      }
+      html += '<div class="tile-name">' + tileName + '</div>';
+      html += '<div class="tile-date">' + tileDate + '</div>';
+      html += '</div>';
+
+      // Add chevrons between tiles
+      if (i < allForSnake.length - 1) {
+        var nextI = i + 1;
+        var nextRow = Math.floor(nextI / cols);
+        var nextColInRow = nextI % cols;
+        var nextIsRev = nextRow % 2 === 1;
+        var nextCol = nextIsRev ? (cols - 1 - nextColInRow) : nextColInRow;
+
+        if (nextRow === row) {
+          // Same row: horizontal chevron in the gap
+          var chevX, chevIcon;
+          if (!isReversed) {
+            chevX = gridPadLeft + col * (tileW + gapX) + tileW; // right edge of current tile
+            chevIcon = 'fa-chevron-right';
+          } else {
+            chevX = gridPadLeft + col * (tileW + gapX) - gapX; // left edge gap
+            chevIcon = 'fa-chevron-left';
+          }
+          var chevY = y + tileH / 2;
+          html += '<div class="snake-chevron" style="left:' + chevX + 'px;top:' + (chevY - 9) + 'px;width:' + gapX + 'px;height:18px;">';
+          html += '<i class="fa-solid ' + chevIcon + '"></i></div>';
+        } else {
+          // Row turn: down chevron at the edge
+          var turnX;
+          if (!isReversed) {
+            turnX = gridPadLeft + col * (tileW + gapX) + tileW / 2; // center of last tile
+          } else {
+            turnX = gridPadLeft + col * (tileW + gapX) + tileW / 2;
+          }
+          var turnY = y + tileH;
+          html += '<div class="snake-chevron" style="left:' + (turnX - 9) + 'px;top:' + turnY + 'px;width:18px;height:' + gapY + 'px;">';
+          html += '<i class="fa-solid fa-chevron-down"></i></div>';
+        }
+      }
+    });
+
+    html += '</div>'; // snake-grid
+    html += '</div>'; // snake-section
 
     app.innerHTML = html;
+
     document.body.setAttribute('data-loaded', 'true');
   }
 
+
   function renderError(msg) {
     var app = document.getElementById('app');
-    app.innerHTML = '<div class="error-state">' + escapeHtml(msg) + '</div>' +
-      '<div class="footer"><div class="footer-left">openf1.org \u00b7 ' + YEAR + '</div>' +
-      '<div class="footer-right">' + formatTimestamp() + '</div></div>';
+    app.innerHTML = '<div class="error-state">' + escapeHtml(msg) + '</div>';
     document.body.setAttribute('data-loaded', 'true');
   }
 
