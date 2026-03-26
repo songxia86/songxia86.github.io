@@ -3,7 +3,7 @@
     "KoboGlo": {
       "width": 768,
       "height": 1024,
-      "deviceScaleFactor": 1,
+      "deviceScaleFactor": 2,
       "colorScheme": "light",
       "files": ["f1_drivers.html", "f1_constructors.html", "f1_calendar.html"]
     }

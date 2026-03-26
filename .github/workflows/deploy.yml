@@ -26,8 +26,9 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Install Playwright
+      - name: Install dependencies
         run: |
+          sudo apt-get install -y imagemagick
           npm init -y
           npm install playwright
           npx playwright install chromium --with-deps

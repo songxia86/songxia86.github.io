@@ -2,6 +2,7 @@ const { chromium } = require('playwright');
 const fs = require('fs');
 const path = require('path');
 const http = require('http');
+const { execSync } = require('child_process');
 
 const DASHBOARDS = path.join(__dirname, 'dashboards');
 const CONFIG_PATH = path.join(DASHBOARDS, 'render.config.json');
@@ -32,7 +33,13 @@ async function main() {
   const port = server.address().port;
   console.log(`Local server on port ${port}`);
 
-  const browser = await chromium.launch();
+  const browser = await chromium.launch({
+    args: [
+      '--font-render-hinting=none',
+      '--disable-lcd-text',
+      '--force-color-profile=srgb',
+    ],
+  });
 
   for (const [configName, config] of Object.entries(configs)) {
     const { files, ...renderSettings } = config;
@@ -64,6 +71,12 @@ async function main() {
       const page = await context.newPage();
       await page.goto(`http://127.0.0.1:${port}/${file}`, { waitUntil: 'networkidle' });
 
+      // Wait for fonts to fully load
+      await page.waitForFunction(
+        () => document.fonts.ready.then(() => true),
+        { timeout: 10000 }
+      ).catch(() => console.log(`  ⚠ ${file} fonts may not have loaded`));
+
       // Wait for page to signal data is loaded (30s timeout)
       await page.waitForFunction(
         () => document.body.getAttribute('data-loaded') === 'true',
@@ -72,6 +85,23 @@ async function main() {
 
       await page.screenshot({ path: pngPath, fullPage: false });
       await page.close();
+
+      // Downsample to native resolution if rendered at higher scale
+      const scale = renderSettings.deviceScaleFactor || 1;
+      if (scale > 1) {
+        const tW = renderSettings.width;
+        const tH = renderSettings.height;
+        // Try multiple tools in order of preference
+        const cmds = [
+          `convert '${pngPath}' -resize ${tW}x${tH} -filter Lanczos '${pngPath}'`,  // ImageMagick
+          `sips -z ${tH} ${tW} '${pngPath}'`,  // macOS
+        ];
+        let ok = false;
+        for (const cmd of cmds) {
+          try { execSync(cmd + ' 2>/dev/null'); ok = true; break; } catch(e) {}
+        }
+        if (!ok) console.log(`  ⚠ Could not downsample ${pngName}`);
+      }
 
       console.log(`  ✓ ${pngName}`);
 
