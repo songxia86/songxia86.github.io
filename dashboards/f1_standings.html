@@ -12,7 +12,7 @@
 
 body { margin: 0; width: 768px; height: 1024px; overflow: hidden; background: #e8e6e1; color: #000; font-family: 'Inter', sans-serif; font-size: 14px; line-height: 1.4; }
 
-.page { width: 768px; height: 1024px; padding: 20px; display: flex; flex-direction: column; background: #fff; border-radius: 12px; border: 1px solid #d0cec9; box-sizing: border-box; position: relative; overflow: hidden; }
+.page { width: 768px; height: 1024px; padding: 20px 20px 30px 20px; display: flex; flex-direction: column; background: #fff; border-radius: 12px; border: 1px solid #d0cec9; box-sizing: border-box; position: relative; overflow: hidden; }
 
 /* Header */
 .header {
@@ -30,93 +30,92 @@ body { margin: 0; width: 768px; height: 1024px; overflow: hidden; background: #e
   gap: 12px;
 }
 .header-title { font-family: 'Playfair Display', serif; font-weight: 900; font-size: 36px; letter-spacing: -1px; line-height: 1; color: #000; }
-.header-subtitle { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 3px; text-transform: uppercase; color: #444; }
-
+.header-subtitle { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 500; letter-spacing: 3px; text-transform: uppercase; color: #444; }
 
 /* Drivers P1 Featured Card */
 .driver-p1 {
-  height: 140px; background: #f4f3f0; border-radius: 8px; border: 1px solid #d0cec9;
+  height: 160px; background: #f4f3f0; border-radius: 8px; border: 1px solid #d0cec9;
   display: flex; flex-direction: row; align-items: center;
   padding: 14px 18px; position: relative; overflow: hidden; gap: 16px;
-  margin-top: 10px; margin-bottom: 4px;
+  margin-top: 10px; margin-bottom: 6px;
 }
 .driver-p1-watermark {
   position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
-  font-family: 'Playfair Display', serif; font-size: 100px; font-weight: 900;
+  font-family: 'Playfair Display', serif; font-size: 110px; font-weight: 900;
   color: #000; opacity: 0.20; line-height: 1; pointer-events: none;
 }
 .driver-p1-photo {
-  width: 90px; height: 90px; border-radius: 50%; border: 3px solid #d0cec9;
+  width: 100px; height: 100px; border-radius: 50%; border: 3px solid #d0cec9;
   object-fit: cover; filter: grayscale(1) contrast(1.2); flex-shrink: 0;
   background: #d0cec9;
 }
 .driver-p1-info { display: flex; flex-direction: column; justify-content: center; min-width: 0; }
-.driver-p1-name { font-family: 'Inter', sans-serif; font-size: 24px; font-weight: 400; color: #000; }
+.driver-p1-name { font-family: 'Inter', sans-serif; font-size: 28px; font-weight: 400; color: #000; }
 .driver-p1-name b { font-weight: 700; }
-.driver-p1-code { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 400; color: #444; margin-top: 4px; }
-.driver-p1-pts { font-family: 'JetBrains Mono', monospace; font-size: 28px; font-weight: 700; color: #000; margin-top: 4px; }
+.driver-p1-code { font-family: 'JetBrains Mono', monospace; font-size: 18px; font-weight: 400; color: #444; margin-top: 4px; }
+.driver-p1-pts { font-family: 'JetBrains Mono', monospace; font-size: 32px; font-weight: 700; color: #000; margin-top: 4px; }
 
 /* Drivers P2-P5 Rows */
 .driver-row {
-  height: 75px; display: flex; flex-direction: row; align-items: center;
-  padding: 0 14px; position: relative; overflow: hidden; gap: 12px;
+  height: 80px; display: flex; flex-direction: row; align-items: center;
+  padding: 0 14px; position: relative; overflow: hidden; gap: 14px;
   border-bottom: 1px solid #e8e6e1;
 }
 .driver-row:last-child { border-bottom: none; }
 .driver-row-watermark {
   position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
-  font-family: 'Playfair Display', serif; font-size: 60px; font-weight: 900;
+  font-family: 'Playfair Display', serif; font-size: 65px; font-weight: 900;
   color: #000; opacity: 0.18; line-height: 1; pointer-events: none;
 }
 .driver-row-photo {
-  width: 50px; height: 50px; border-radius: 50%; border: 2px solid #d0cec9;
+  width: 55px; height: 55px; border-radius: 50%; border: 2px solid #d0cec9;
   object-fit: cover; filter: grayscale(1) contrast(1.2); flex-shrink: 0;
   background: #d0cec9;
 }
 .driver-row-info { display: flex; flex-direction: column; justify-content: center; min-width: 0; }
-.driver-row-name { font-family: 'Inter', sans-serif; font-size: 18px; font-weight: 400; color: #000; }
+.driver-row-name { font-family: 'Inter', sans-serif; font-size: 22px; font-weight: 400; color: #000; }
 .driver-row-name b { font-weight: 700; }
-.driver-row-detail { font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 400; color: #444; margin-top: 2px; }
+.driver-row-detail { font-family: 'JetBrains Mono', monospace; font-size: 16px; font-weight: 400; color: #444; margin-top: 2px; }
 
 /* Divider */
 .section-divider { border: none; border-top: 1px solid #d0cec9; margin: 10px 0; }
 
 /* Constructors P1 Featured Card */
 .team-p1 {
-  height: 120px; background: #f4f3f0; border-radius: 8px; border: 1px solid #d0cec9;
+  height: 130px; background: #f4f3f0; border-radius: 8px; border: 1px solid #d0cec9;
   display: flex; flex-direction: column; justify-content: center;
   padding: 16px 22px; position: relative; overflow: hidden;
-  margin-bottom: 4px;
+  margin-bottom: 6px;
 }
 .team-p1-watermark {
   position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
-  font-family: 'Playfair Display', serif; font-size: 90px; font-weight: 900;
+  font-family: 'Playfair Display', serif; font-size: 100px; font-weight: 900;
   color: #000; opacity: 0.20; line-height: 1; pointer-events: none;
 }
-.team-p1-name { font-family: 'Inter', sans-serif; font-size: 28px; font-weight: 700; color: #000; }
-.team-p1-pts { font-family: 'JetBrains Mono', monospace; font-size: 24px; font-weight: 700; color: #000; margin-top: 6px; }
+.team-p1-name { font-family: 'Inter', sans-serif; font-size: 32px; font-weight: 700; color: #000; }
+.team-p1-pts { font-family: 'JetBrains Mono', monospace; font-size: 28px; font-weight: 700; color: #000; margin-top: 6px; }
 
 /* Constructors P2-P5 Rows */
 .team-row {
-  height: 70px; display: flex; flex-direction: column; justify-content: center;
+  height: 75px; display: flex; flex-direction: column; justify-content: center;
   padding: 0 18px; position: relative; overflow: hidden;
   border-bottom: 1px solid #e8e6e1;
 }
 .team-row:last-child { border-bottom: none; }
 .team-row-watermark {
   position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
-  font-family: 'Playfair Display', serif; font-size: 50px; font-weight: 900;
+  font-family: 'Playfair Display', serif; font-size: 55px; font-weight: 900;
   color: #000; opacity: 0.18; line-height: 1; pointer-events: none;
 }
-.team-row-name { font-family: 'Inter', sans-serif; font-size: 20px; font-weight: 700; color: #000; }
-.team-row-pts { font-family: 'JetBrains Mono', monospace; font-size: 16px; font-weight: 400; color: #444; margin-top: 2px; }
+.team-row-name { font-family: 'Inter', sans-serif; font-size: 24px; font-weight: 700; color: #000; }
+.team-row-pts { font-family: 'JetBrains Mono', monospace; font-size: 18px; font-weight: 500; color: #333; margin-top: 2px; }
 
-.error-msg { font-family: 'Inter', sans-serif; font-size: 16px; color: #666; padding: 24px 0; text-align: center; }
-.loading-msg { font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #666; padding: 32px 0; text-align: center; letter-spacing: 1px; }
+.error-msg { font-family: 'Inter', sans-serif; font-size: 18px; color: #444; padding: 24px 0; text-align: center; }
+.loading-msg { font-family: 'JetBrains Mono', monospace; font-size: 16px; color: #444; padding: 32px 0; text-align: center; letter-spacing: 1px; }
 
 .timestamp {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 10px; font-weight: 400; color: #888;
+  font-size: 12px; font-weight: 400; color: #888;
   position: absolute; bottom: 8px; right: 16px;
 }
 </style>
