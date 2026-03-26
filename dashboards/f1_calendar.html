@@ -487,18 +487,30 @@ body {
     return sMonth + ' ' + sDay + '\u2013' + eMonth + ' ' + eDay;
   }
 
-  async function fetchJSON(url, retries) {
-    retries = retries || 3;
-    for (var i = 0; i < retries; i++) {
-      var resp = await fetch(url);
-      if (resp.status === 429) {
-        await new Promise(function(r) { setTimeout(r, Math.pow(2, i) * 2000); });
-        continue;
+  async function fetchJSON(url) {
+    var maxRetries = 4;
+    for (var attempt = 0; attempt < maxRetries; attempt++) {
+      try {
+        var resp = await fetch(url);
+        if (resp.status === 429) {
+          var wait = Math.pow(2, attempt) * 2000 + Math.random() * 1000;
+          console.warn('Rate limited on ' + url + ', retry in ' + Math.round(wait) + 'ms');
+          await new Promise(function(r) { setTimeout(r, wait); });
+          continue;
+        }
+        if (!resp.ok) throw new Error('HTTP ' + resp.status);
+        return await resp.json();
+      } catch (err) {
+        if (attempt < maxRetries - 1) {
+          var wait = Math.pow(2, attempt) * 1500 + Math.random() * 500;
+          console.warn('Fetch error on ' + url + ': ' + err.message + ', retry in ' + Math.round(wait) + 'ms');
+          await new Promise(function(r) { setTimeout(r, wait); });
+        } else {
+          throw err;
+        }
       }
-      if (!resp.ok) throw new Error('API returned ' + resp.status);
-      return resp.json();
     }
-    throw new Error('Rate limited after ' + retries + ' retries');
+    throw new Error('Failed after ' + maxRetries + ' retries');
   }
 
   function escapeHtml(str) {

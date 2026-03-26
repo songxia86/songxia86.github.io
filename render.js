@@ -57,6 +57,9 @@ async function main() {
       colorScheme: renderSettings.colorScheme || 'light',
     });
 
+    const MIN_PNG_SIZE = 20000; // Valid dashboard PNGs are >20KB
+    const RENDER_MAX_RETRIES = 3;
+
     for (const file of files) {
       const filePath = path.join(DASHBOARDS, file);
 
@@ -68,45 +71,81 @@ async function main() {
       const pngName = file.replace(/\.html$/, `.${configName}.png`);
       const pngPath = path.join(DASHBOARDS, pngName);
 
-      const page = await context.newPage();
-      await page.goto(`http://127.0.0.1:${port}/${file}`, { waitUntil: 'networkidle' });
-
-      // Wait for fonts to fully load
-      await page.waitForFunction(
-        () => document.fonts.ready.then(() => true),
-        { timeout: 10000 }
-      ).catch(() => console.log(`  ⚠ ${file} fonts may not have loaded`));
-
-      // Wait for page to signal data is loaded (30s timeout)
-      await page.waitForFunction(
-        () => document.body.getAttribute('data-loaded') === 'true',
-        { timeout: 30000 }
-      ).catch(() => console.log(`  ⚠ ${file} did not set data-loaded, screenshotting anyway`));
-
-      await page.screenshot({ path: pngPath, fullPage: false });
-      await page.close();
-
-      // Downsample to native resolution if rendered at higher scale
-      const scale = renderSettings.deviceScaleFactor || 1;
-      if (scale > 1) {
-        const tW = renderSettings.width;
-        const tH = renderSettings.height;
-        // Try multiple tools in order of preference
-        const cmds = [
-          `convert '${pngPath}' -resize ${tW}x${tH} -filter Lanczos '${pngPath}'`,  // ImageMagick
-          `sips -z ${tH} ${tW} '${pngPath}'`,  // macOS
-        ];
-        let ok = false;
-        for (const cmd of cmds) {
-          try { execSync(cmd + ' 2>/dev/null'); ok = true; break; } catch(e) {}
+      // Back up previous good PNG
+      const prevPath = pngPath + '.prev';
+      if (fs.existsSync(pngPath)) {
+        const prevSize = fs.statSync(pngPath).size;
+        if (prevSize >= MIN_PNG_SIZE) {
+          fs.copyFileSync(pngPath, prevPath);
         }
-        if (!ok) console.log(`  ⚠ Could not downsample ${pngName}`);
       }
 
-      console.log(`  ✓ ${pngName}`);
+      let renderOk = false;
+
+      for (let attempt = 0; attempt < RENDER_MAX_RETRIES; attempt++) {
+        if (attempt > 0) {
+          console.log(`  ↻ ${file} retry ${attempt + 1}/${RENDER_MAX_RETRIES}`);
+          await new Promise(r => setTimeout(r, 5000 * attempt));
+        }
+
+        const page = await context.newPage();
+        await page.goto(`http://127.0.0.1:${port}/${file}`, { waitUntil: 'networkidle' });
+
+        // Wait for fonts to fully load
+        await page.waitForFunction(
+          () => document.fonts.ready.then(() => true),
+          { timeout: 10000 }
+        ).catch(() => {});
+
+        // Wait for page to signal data is loaded (45s timeout to allow retries in HTML)
+        await page.waitForFunction(
+          () => document.body.getAttribute('data-loaded') === 'true',
+          { timeout: 45000 }
+        ).catch(() => console.log(`  ⚠ ${file} did not set data-loaded`));
+
+        await page.screenshot({ path: pngPath, fullPage: false });
+        await page.close();
+
+        // Downsample if needed
+        const scale = renderSettings.deviceScaleFactor || 1;
+        if (scale > 1) {
+          const tW = renderSettings.width;
+          const tH = renderSettings.height;
+          const cmds = [
+            `convert '${pngPath}' -resize ${tW}x${tH} -filter Lanczos '${pngPath}'`,
+            `sips -z ${tH} ${tW} '${pngPath}'`,
+          ];
+          for (const cmd of cmds) {
+            try { execSync(cmd + ' 2>/dev/null'); break; } catch(e) {}
+          }
+        }
+
+        // Validate PNG size
+        const size = fs.statSync(pngPath).size;
+        if (size >= MIN_PNG_SIZE) {
+          renderOk = true;
+          console.log(`  ✓ ${pngName} (${(size/1024).toFixed(0)}KB)`);
+          // Remove backup
+          if (fs.existsSync(prevPath)) fs.unlinkSync(prevPath);
+          break;
+        } else {
+          console.log(`  ⚠ ${pngName} too small (${(size/1024).toFixed(1)}KB), likely failed render`);
+        }
+      }
+
+      // If all retries failed, restore previous good PNG
+      if (!renderOk) {
+        if (fs.existsSync(prevPath)) {
+          fs.copyFileSync(prevPath, pngPath);
+          fs.unlinkSync(prevPath);
+          console.log(`  ✗ ${pngName} FAILED, restored previous version`);
+        } else {
+          console.log(`  ✗ ${pngName} FAILED, no previous version to restore`);
+        }
+      }
 
       // Delay between files to avoid API rate limits
-      await new Promise(r => setTimeout(r, 2000));
+      await new Promise(r => setTimeout(r, 3000));
     }
 
     await context.close();
