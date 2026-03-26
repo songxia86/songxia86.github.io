@@ -30,7 +30,7 @@ body { margin: 0; width: 768px; height: 1024px; overflow: hidden; background: #e
   gap: 12px;
 }
 .header-title { font-family: 'Playfair Display', serif; font-weight: 900; font-size: 36px; letter-spacing: -1px; line-height: 1; color: #000; }
-.header-subtitle { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 3px; text-transform: uppercase; color: #666; }
+.header-subtitle { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 3px; text-transform: uppercase; color: #444; }
 
 
 /* Drivers P1 Featured Card */
@@ -43,7 +43,7 @@ body { margin: 0; width: 768px; height: 1024px; overflow: hidden; background: #e
 .driver-p1-watermark {
   position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
   font-family: 'Playfair Display', serif; font-size: 100px; font-weight: 900;
-  color: #000; opacity: 0.12; line-height: 1; pointer-events: none;
+  color: #000; opacity: 0.20; line-height: 1; pointer-events: none;
 }
 .driver-p1-photo {
   width: 90px; height: 90px; border-radius: 50%; border: 3px solid #d0cec9;
@@ -53,7 +53,7 @@ body { margin: 0; width: 768px; height: 1024px; overflow: hidden; background: #e
 .driver-p1-info { display: flex; flex-direction: column; justify-content: center; min-width: 0; }
 .driver-p1-name { font-family: 'Inter', sans-serif; font-size: 24px; font-weight: 400; color: #000; }
 .driver-p1-name b { font-weight: 700; }
-.driver-p1-code { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 400; color: #666; margin-top: 4px; }
+.driver-p1-code { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 400; color: #444; margin-top: 4px; }
 .driver-p1-pts { font-family: 'JetBrains Mono', monospace; font-size: 28px; font-weight: 700; color: #000; margin-top: 4px; }
 
 /* Drivers P2-P5 Rows */
@@ -66,7 +66,7 @@ body { margin: 0; width: 768px; height: 1024px; overflow: hidden; background: #e
 .driver-row-watermark {
   position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
   font-family: 'Playfair Display', serif; font-size: 60px; font-weight: 900;
-  color: #000; opacity: 0.10; line-height: 1; pointer-events: none;
+  color: #000; opacity: 0.18; line-height: 1; pointer-events: none;
 }
 .driver-row-photo {
   width: 50px; height: 50px; border-radius: 50%; border: 2px solid #d0cec9;
@@ -76,7 +76,7 @@ body { margin: 0; width: 768px; height: 1024px; overflow: hidden; background: #e
 .driver-row-info { display: flex; flex-direction: column; justify-content: center; min-width: 0; }
 .driver-row-name { font-family: 'Inter', sans-serif; font-size: 18px; font-weight: 400; color: #000; }
 .driver-row-name b { font-weight: 700; }
-.driver-row-detail { font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 400; color: #666; margin-top: 2px; }
+.driver-row-detail { font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 400; color: #444; margin-top: 2px; }
 
 /* Divider */
 .section-divider { border: none; border-top: 1px solid #d0cec9; margin: 10px 0; }
@@ -91,7 +91,7 @@ body { margin: 0; width: 768px; height: 1024px; overflow: hidden; background: #e
 .team-p1-watermark {
   position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
   font-family: 'Playfair Display', serif; font-size: 90px; font-weight: 900;
-  color: #000; opacity: 0.12; line-height: 1; pointer-events: none;
+  color: #000; opacity: 0.20; line-height: 1; pointer-events: none;
 }
 .team-p1-name { font-family: 'Inter', sans-serif; font-size: 28px; font-weight: 700; color: #000; }
 .team-p1-pts { font-family: 'JetBrains Mono', monospace; font-size: 24px; font-weight: 700; color: #000; margin-top: 6px; }
@@ -106,17 +106,17 @@ body { margin: 0; width: 768px; height: 1024px; overflow: hidden; background: #e
 .team-row-watermark {
   position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
   font-family: 'Playfair Display', serif; font-size: 50px; font-weight: 900;
-  color: #000; opacity: 0.10; line-height: 1; pointer-events: none;
+  color: #000; opacity: 0.18; line-height: 1; pointer-events: none;
 }
 .team-row-name { font-family: 'Inter', sans-serif; font-size: 20px; font-weight: 700; color: #000; }
-.team-row-pts { font-family: 'JetBrains Mono', monospace; font-size: 16px; font-weight: 400; color: #666; margin-top: 2px; }
+.team-row-pts { font-family: 'JetBrains Mono', monospace; font-size: 16px; font-weight: 400; color: #444; margin-top: 2px; }
 
-.error-msg { font-family: 'Inter', sans-serif; font-size: 16px; color: #999; padding: 24px 0; text-align: center; }
-.loading-msg { font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #999; padding: 32px 0; text-align: center; letter-spacing: 1px; }
+.error-msg { font-family: 'Inter', sans-serif; font-size: 16px; color: #666; padding: 24px 0; text-align: center; }
+.loading-msg { font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #666; padding: 32px 0; text-align: center; letter-spacing: 1px; }
 
 .timestamp {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 10px; font-weight: 400; color: #bbb;
+  font-size: 10px; font-weight: 400; color: #888;
   position: absolute; bottom: 8px; right: 16px;
 }
 </style>
