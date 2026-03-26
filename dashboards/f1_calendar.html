@@ -336,8 +336,8 @@ body {
   font-weight: 400;
   color: #888;
   position: absolute;
-  bottom: 8px;
-  right: 16px;
+  top: 28px;
+  right: 20px;
 }
 </style>
 </head>
@@ -430,9 +430,16 @@ body {
   }
 
   function render(meetings, sessions) {
-    // Filter out testing meetings
+    // Filter out testing meetings and canceled races
+    // Bahrain GP and Saudi Arabian GP in April 2026 were canceled
     var races = meetings
-      .filter(function(m) { return !(/test/i.test(m.meeting_name || '')); })
+      .filter(function(m) {
+        if (/test/i.test(m.meeting_name || '')) return false;
+        var name = (m.meeting_name || '').toLowerCase();
+        var d = new Date(m.date_start);
+        if ((name.indexOf('bahrain') >= 0 || name.indexOf('saudi') >= 0) && d.getUTCFullYear() === 2026 && d.getUTCMonth() === 3) return false;
+        return true;
+      })
       .sort(function(a, b) { return new Date(a.date_start) - new Date(b.date_start); });
 
     // Group sessions by meeting_key
@@ -493,7 +500,6 @@ body {
     html += '<span class="header-title">F1 2026</span>';
     html += '<span class="header-subtitle">RACE CALENDAR</span>';
     html += '</div>';
-    html += '<div class="progress-pill">' + completedCount + '/' + totalRaces + '</div>';
     html += '</div>';
 
     // Previous Race Strip
@@ -538,7 +544,7 @@ body {
       html += '<span class="hero-upnext">UP NEXT</span>';
 
       // Round + date range
-      html += '<div class="hero-round">ROUND ' + round + ' \u00b7 ' + heroDateRange + '</div>';
+      html += '<div class="hero-round">ROUND ' + round + ' OF ' + totalRaces + ' \u00b7 ' + heroDateRange + '</div>';
 
       // Race name - the headline
       html += '<div class="hero-race-name">' + escapeHtml(nextRace.meeting_name || '') + '</div>';
