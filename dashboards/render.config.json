@@ -5,7 +5,7 @@
       "height": 1024,
       "deviceScaleFactor": 2,
       "colorScheme": "light",
-      "files": ["f1_drivers.html", "f1_constructors.html", "f1_calendar.html"]
+      "files": ["f1_standings.html", "f1_calendar.html"]
     }
   }
 }

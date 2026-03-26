@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=768">
+<title>F1 2026 Championship Standings</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;700&family=Playfair+Display:wght@400;700;900&display=swap');
+
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+
+body { margin: 0; width: 768px; height: 1024px; overflow: hidden; background: #e8e6e1; color: #000; font-family: 'Inter', sans-serif; font-size: 14px; line-height: 1.4; }
+
+.page { width: 768px; height: 1024px; padding: 20px; display: flex; flex-direction: column; background: #fff; border-radius: 12px; border: 1px solid #d0cec9; box-sizing: border-box; position: relative; overflow: hidden; }
+
+/* Header */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 4px;
+  margin-bottom: 0;
+  flex-shrink: 0;
+  height: 45px;
+}
+.header-left {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+}
+.header-title { font-family: 'Playfair Display', serif; font-weight: 900; font-size: 36px; letter-spacing: -1px; line-height: 1; color: #000; }
+.header-subtitle { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 3px; text-transform: uppercase; color: #666; }
+
+
+/* Drivers P1 Featured Card */
+.driver-p1 {
+  height: 140px; background: #f4f3f0; border-radius: 8px; border: 1px solid #d0cec9;
+  display: flex; flex-direction: row; align-items: center;
+  padding: 14px 18px; position: relative; overflow: hidden; gap: 16px;
+  margin-top: 10px; margin-bottom: 4px;
+}
+.driver-p1-watermark {
+  position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+  font-family: 'Playfair Display', serif; font-size: 100px; font-weight: 900;
+  color: #000; opacity: 0.12; line-height: 1; pointer-events: none;
+}
+.driver-p1-photo {
+  width: 90px; height: 90px; border-radius: 50%; border: 3px solid #d0cec9;
+  object-fit: cover; filter: grayscale(1) contrast(1.2); flex-shrink: 0;
+  background: #d0cec9;
+}
+.driver-p1-info { display: flex; flex-direction: column; justify-content: center; min-width: 0; }
+.driver-p1-name { font-family: 'Inter', sans-serif; font-size: 24px; font-weight: 400; color: #000; }
+.driver-p1-name b { font-weight: 700; }
+.driver-p1-code { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 400; color: #666; margin-top: 4px; }
+.driver-p1-pts { font-family: 'JetBrains Mono', monospace; font-size: 28px; font-weight: 700; color: #000; margin-top: 4px; }
+
+/* Drivers P2-P5 Rows */
+.driver-row {
+  height: 75px; display: flex; flex-direction: row; align-items: center;
+  padding: 0 14px; position: relative; overflow: hidden; gap: 12px;
+  border-bottom: 1px solid #e8e6e1;
+}
+.driver-row:last-child { border-bottom: none; }
+.driver-row-watermark {
+  position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
+  font-family: 'Playfair Display', serif; font-size: 60px; font-weight: 900;
+  color: #000; opacity: 0.10; line-height: 1; pointer-events: none;
+}
+.driver-row-photo {
+  width: 50px; height: 50px; border-radius: 50%; border: 2px solid #d0cec9;
+  object-fit: cover; filter: grayscale(1) contrast(1.2); flex-shrink: 0;
+  background: #d0cec9;
+}
+.driver-row-info { display: flex; flex-direction: column; justify-content: center; min-width: 0; }
+.driver-row-name { font-family: 'Inter', sans-serif; font-size: 18px; font-weight: 400; color: #000; }
+.driver-row-name b { font-weight: 700; }
+.driver-row-detail { font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 400; color: #666; margin-top: 2px; }
+
+/* Divider */
+.section-divider { border: none; border-top: 1px solid #d0cec9; margin: 10px 0; }
+
+/* Constructors P1 Featured Card */
+.team-p1 {
+  height: 120px; background: #f4f3f0; border-radius: 8px; border: 1px solid #d0cec9;
+  display: flex; flex-direction: column; justify-content: center;
+  padding: 16px 22px; position: relative; overflow: hidden;
+  margin-bottom: 4px;
+}
+.team-p1-watermark {
+  position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+  font-family: 'Playfair Display', serif; font-size: 90px; font-weight: 900;
+  color: #000; opacity: 0.12; line-height: 1; pointer-events: none;
+}
+.team-p1-name { font-family: 'Inter', sans-serif; font-size: 28px; font-weight: 700; color: #000; }
+.team-p1-pts { font-family: 'JetBrains Mono', monospace; font-size: 24px; font-weight: 700; color: #000; margin-top: 6px; }
+
+/* Constructors P2-P5 Rows */
+.team-row {
+  height: 70px; display: flex; flex-direction: column; justify-content: center;
+  padding: 0 18px; position: relative; overflow: hidden;
+  border-bottom: 1px solid #e8e6e1;
+}
+.team-row:last-child { border-bottom: none; }
+.team-row-watermark {
+  position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
+  font-family: 'Playfair Display', serif; font-size: 50px; font-weight: 900;
+  color: #000; opacity: 0.10; line-height: 1; pointer-events: none;
+}
+.team-row-name { font-family: 'Inter', sans-serif; font-size: 20px; font-weight: 700; color: #000; }
+.team-row-pts { font-family: 'JetBrains Mono', monospace; font-size: 16px; font-weight: 400; color: #666; margin-top: 2px; }
+
+.error-msg { font-family: 'Inter', sans-serif; font-size: 16px; color: #999; padding: 24px 0; text-align: center; }
+.loading-msg { font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #999; padding: 32px 0; text-align: center; letter-spacing: 1px; }
+
+.timestamp {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px; font-weight: 400; color: #bbb;
+  position: absolute; bottom: 8px; right: 16px;
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="header">
+    <div class="header-left">
+      <span class="header-title">F1 2026</span>
+      <span class="header-subtitle">CHAMPIONSHIP</span>
+    </div>
+  </div>
+
+  <div id="content">
+    <div class="loading-msg">Loading standings...</div>
+  </div>
+
+  <span class="timestamp" id="timestamp"></span>
+</div>
+
+<script>
+(async function() {
+  document.getElementById('timestamp').textContent = (function() {
+    var d = new Date();
+    return d.getUTCFullYear() + '-' + String(d.getUTCMonth()+1).padStart(2,'0') + '-' +
+      String(d.getUTCDate()).padStart(2,'0') + ' ' + String(d.getUTCHours()).padStart(2,'0') + ':' +
+      String(d.getUTCMinutes()).padStart(2,'0') + ' UTC';
+  })();
+
+  var API = 'https://api.openf1.org/v1';
+
+  async function fetchJSON(url) {
+    var maxRetries = 4;
+    for (var attempt = 0; attempt < maxRetries; attempt++) {
+      try {
+        var resp = await fetch(url);
+        if (resp.status === 429) {
+          var wait = Math.pow(2, attempt) * 2000 + Math.random() * 1000;
+          console.warn('Rate limited on ' + url + ', retry in ' + Math.round(wait) + 'ms');
+          await new Promise(function(r) { setTimeout(r, wait); });
+          continue;
+        }
+        if (!resp.ok) throw new Error('HTTP ' + resp.status);
+        return await resp.json();
+      } catch (err) {
+        if (attempt < maxRetries - 1) {
+          var wait = Math.pow(2, attempt) * 1500 + Math.random() * 500;
+          console.warn('Fetch error on ' + url + ': ' + err.message + ', retry in ' + Math.round(wait) + 'ms');
+          await new Promise(function(r) { setTimeout(r, wait); });
+        } else {
+          throw err;
+        }
+      }
+    }
+    throw new Error('Failed after ' + maxRetries + ' retries');
+  }
+
+  function esc(s) { var d = document.createElement('div'); d.textContent = s || ''; return d.innerHTML; }
+
+  try {
+    var results = await Promise.all([
+      fetchJSON(API + '/drivers?session_key=latest').catch(function() { return []; }),
+      fetchJSON(API + '/championship_drivers?session_key=latest').catch(function() { return []; }),
+      fetchJSON(API + '/championship_teams?session_key=latest').catch(function() { return []; })
+    ]);
+    var driversRaw = results[0];
+    var champDrivers = results[1];
+    var champTeams = results[2];
+
+    // Build driver lookup by number
+    var driverMap = {};
+    (driversRaw || []).forEach(function(d) { if (d.driver_number != null) driverMap[d.driver_number] = d; });
+
+    // Sort drivers by position
+    var sortedDrivers = (champDrivers || []).slice().sort(function(a, b) {
+      var pa = a.position_current || 999, pb = b.position_current || 999;
+      return pa !== pb ? pa - pb : (b.points_current || 0) - (a.points_current || 0);
+    }).slice(0, 5);
+
+    // Sort constructors by position
+    var sortedTeams = (champTeams || []).slice().sort(function(a, b) {
+      var pa = a.position_current || 999, pb = b.position_current || 999;
+      return pa !== pb ? pa - pb : (b.points_current || 0) - (a.points_current || 0);
+    }).slice(0, 5);
+
+    if (!sortedDrivers.length && !sortedTeams.length) {
+      document.getElementById('content').innerHTML = '<div class="error-msg">Data unavailable</div>';
+    } else {
+      var html = '';
+
+      // ---- DRIVERS SECTION ----
+
+      if (sortedDrivers.length > 0) {
+        // P1 Featured
+        var e = sortedDrivers[0];
+        var d = driverMap[e.driver_number] || {};
+        var fullName = d.full_name || e.driver_name || 'Driver #' + e.driver_number;
+        var firstName = d.first_name || '';
+        var lastName = d.last_name || '';
+        if (!firstName && !lastName) {
+          var parts = fullName.trim().split(/\s+/);
+          if (parts.length > 1) { lastName = parts.pop(); firstName = parts.join(' '); }
+          else { lastName = fullName; }
+        }
+        var code = d.name_acronym || (lastName ? lastName.substring(0, 3).toUpperCase() : '???');
+        var pts = e.points_current != null ? e.points_current : '\u2014';
+        var num = d.driver_number || e.driver_number || '';
+        var headshot = d.headshot_url || '';
+
+        html += '<div class="driver-p1">';
+        html += '<span class="driver-p1-watermark">P1</span>';
+        if (headshot) {
+          html += '<img class="driver-p1-photo" src="' + esc(headshot) + '" alt="" onerror="this.style.display=\'none\'">';
+        }
+        html += '<div class="driver-p1-info">';
+        html += '<div class="driver-p1-name">' + esc(firstName) + ' <b>' + esc(lastName) + '</b></div>';
+        html += '<div class="driver-p1-code">#' + esc(String(num)) + ' ' + esc(code) + '</div>';
+        html += '<div class="driver-p1-pts">' + pts + ' pts</div>';
+        html += '</div>';
+        html += '</div>';
+
+        // P2-P5 Rows
+        for (var i = 1; i < sortedDrivers.length; i++) {
+          var e = sortedDrivers[i];
+          var d = driverMap[e.driver_number] || {};
+          var fullName = d.full_name || e.driver_name || 'Driver #' + e.driver_number;
+          var firstName = d.first_name || '';
+          var lastName = d.last_name || '';
+          if (!firstName && !lastName) {
+            var parts = fullName.trim().split(/\s+/);
+            if (parts.length > 1) { lastName = parts.pop(); firstName = parts.join(' '); }
+            else { lastName = fullName; }
+          }
+          var code = d.name_acronym || (lastName ? lastName.substring(0, 3).toUpperCase() : '???');
+          var pts = e.points_current != null ? e.points_current : '\u2014';
+          var pos = e.position_current || (i + 1);
+          var num = d.driver_number || e.driver_number || '';
+          var headshot = d.headshot_url || '';
+
+          html += '<div class="driver-row">';
+          html += '<span class="driver-row-watermark">P' + pos + '</span>';
+          if (headshot) {
+            html += '<img class="driver-row-photo" src="' + esc(headshot) + '" alt="" onerror="this.style.display=\'none\'">';
+          }
+          html += '<div class="driver-row-info">';
+          html += '<div class="driver-row-name">' + esc(firstName) + ' <b>' + esc(lastName) + '</b></div>';
+          html += '<div class="driver-row-detail">#' + esc(String(num)) + ' ' + esc(code) + ' \u00B7 ' + pts + 'pts</div>';
+          html += '</div>';
+          html += '</div>';
+        }
+      }
+
+      // ---- DIVIDER ----
+      html += '<hr class="section-divider">';
+
+      // ---- CONSTRUCTORS SECTION ----
+
+      if (sortedTeams.length > 0) {
+        // P1 Featured
+        var t = sortedTeams[0];
+        var teamName = t.team_name || 'Team #1';
+        var teamPts = t.points_current != null ? t.points_current : 0;
+
+        html += '<div class="team-p1">';
+        html += '<span class="team-p1-watermark">P1</span>';
+        html += '<div class="team-p1-name">' + esc(teamName) + '</div>';
+        html += '<div class="team-p1-pts">' + teamPts + ' pts</div>';
+        html += '</div>';
+
+        // P2-P5 Rows
+        for (var i = 1; i < sortedTeams.length; i++) {
+          var t = sortedTeams[i];
+          var teamName = t.team_name || 'Team #' + (i + 1);
+          var teamPts = t.points_current != null ? t.points_current : 0;
+          var pos = t.position_current || (i + 1);
+
+          html += '<div class="team-row">';
+          html += '<span class="team-row-watermark">P' + pos + '</span>';
+          html += '<div class="team-row-name">' + esc(teamName) + '</div>';
+          html += '<div class="team-row-pts">' + teamPts + ' pts</div>';
+          html += '</div>';
+        }
+      }
+
+      document.getElementById('content').innerHTML = html;
+    }
+  } catch (e) {
+    document.getElementById('content').innerHTML = '<div class="error-msg">Data unavailable</div>';
+  }
+
+  // Wait for all images (headshots) to load before signaling ready
+  var imgs = document.querySelectorAll('img');
+  if (imgs.length > 0) {
+    var loaded = 0;
+    var total = imgs.length;
+    var done = function() {
+      loaded++;
+      if (loaded >= total) {
+        document.body.setAttribute('data-loaded', 'true');
+      }
+    };
+    imgs.forEach(function(img) {
+      if (img.complete) { done(); }
+      else {
+        img.addEventListener('load', done);
+        img.addEventListener('error', done);
+      }
+    });
+    // Fallback: signal ready after 10s regardless
+    setTimeout(function() { document.body.setAttribute('data-loaded', 'true'); }, 10000);
+  } else {
+    document.body.setAttribute('data-loaded', 'true');
+  }
+})();
+</script>
+</body>
+</html>
