@@ -103,6 +103,19 @@ async function main() {
           { timeout: 45000 }
         ).catch(() => console.log(`  ⚠ ${file} did not set data-loaded`));
 
+        // Wait for all images (headshots, flags, track maps) to finish loading
+        await page.waitForFunction(
+          () => {
+            var imgs = document.images;
+            if (imgs.length === 0) return true;
+            return Array.from(imgs).every(function(img) { return img.complete && img.naturalWidth > 0; });
+          },
+          { timeout: 15000 }
+        ).catch(() => console.log(`  ⚠ ${file} some images may not have loaded`));
+
+        // Extra settle time for late-loading images
+        await new Promise(r => setTimeout(r, 2000));
+
         await page.screenshot({ path: pngPath, fullPage: false });
         await page.close();
 
