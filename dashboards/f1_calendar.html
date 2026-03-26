@@ -219,76 +219,27 @@ body {
   background: #f0f0f0;
 }
 
-.cd-section {
-  margin-top: auto;
-}
-
-.cd-session-label {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  font-weight: 500;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  color: #666;
-  margin-bottom: 2px;
-}
-
-.countdown {
+.cd-row {
   display: flex;
-  gap: 8px;
   align-items: baseline;
+  gap: 12px;
+  margin-bottom: 8px;
 }
 
-.cd-num {
+.cd-when {
   font-family: 'Playfair Display', serif;
   font-weight: 900;
-  font-size: 32px;
+  font-size: 24px;
   line-height: 1;
   color: #000;
+  flex-shrink: 0;
 }
 
-.cd-label {
+.cd-next-session {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 9px;
+  font-size: 12px;
   font-weight: 500;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  color: #999;
-  margin-top: 1px;
-}
-
-.cd-unit {
-  text-align: center;
-}
-
-.cd-tz {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 9px;
-  color: #999;
-  align-self: flex-end;
-  margin-left: 4px;
-}
-
-.cd-unit {
-  text-align: center;
-}
-
-.cd-num {
-  font-family: 'Playfair Display', serif;
-  font-weight: 900;
-  font-size: 32px;
-  line-height: 1;
-  color: #000;
-}
-
-.cd-label {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 9px;
-  font-weight: 500;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  color: #999;
-  margin-top: 2px;
+  color: #333;
 }
 
 /* Snake Timeline */
@@ -628,13 +579,39 @@ body {
       if (nextRace.circuit_short_name) html += '<span><i class="fa-solid fa-road"></i>' + escapeHtml(nextRace.circuit_short_name) + '</span>';
       html += '</div>';
 
+      // Session labels needed for both countdown and pills
+      var sessionLabels = {'Practice 1':'FP1','Practice 2':'FP2','Practice 3':'FP3','Qualifying':'QUAL','Sprint Qualifying':'SQ','Sprint':'SPRINT','Race':'RACE'};
+
+      // Next session: relative day + time (above pills)
+      if (nextSession) {
+        var diff = new Date(nextSession.date_start) - now;
+        if (diff > 0) {
+          var totalDays = Math.floor(diff / 86400000);
+          var sessionLabel = sessionLabels[nextSession.session_name] || nextSession.session_name;
+
+          var when;
+          if (totalDays === 0) when = 'Today';
+          else if (totalDays === 1) when = 'Tomorrow';
+          else if (totalDays < 7) when = 'In ' + totalDays + ' days';
+          else when = 'In ' + Math.ceil(totalDays / 7) + ' weeks';
+
+          var sessDate = new Date(nextSession.date_start);
+          var sessDay = sessDate.toLocaleString('en-US', {timeZone:'America/Los_Angeles', weekday:'long'});
+          var sessTime = sessDate.toLocaleString('en-US', {timeZone:'America/Los_Angeles', hour:'numeric', minute:'2-digit', hour12:true});
+
+          html += '<div class="cd-row">';
+          html += '<span class="cd-when">' + when + '</span>';
+          html += '<span class="cd-next-session">' + sessionLabel + ' \u00b7 ' + sessDay + ' ' + sessTime + ' PDT</span>';
+          html += '</div>';
+        }
+      }
+
       // Session pills
       var displaySessions = raceSessions.filter(function(s) {
         var n = s.session_name || '';
         return ['Practice 1','Practice 2','Practice 3','Qualifying','Sprint Qualifying','Sprint','Race'].indexOf(n) >= 0;
       });
       if (displaySessions.length) {
-        var sessionLabels = {'Practice 1':'FP1','Practice 2':'FP2','Practice 3':'FP3','Qualifying':'QUAL','Sprint Qualifying':'SQ','Sprint':'SPRINT','Race':'RACE'};
         html += '<div class="session-pills">';
         displaySessions.forEach(function(s) {
           var d = new Date(s.date_start);
@@ -651,24 +628,6 @@ body {
         });
         html += '<span class="cd-tz">PDT</span>';
         html += '</div>';
-      }
-
-      // Countdown
-      if (nextSession) {
-        var diff = new Date(nextSession.date_start) - now;
-        if (diff > 0) {
-          var totalHrs = Math.floor(diff / 3600000);
-          var days = Math.floor(totalHrs / 24);
-          var hrs = totalHrs % 24;
-          var sessionLabel = sessionLabels ? (sessionLabels[nextSession.session_name] || nextSession.session_name) : nextSession.session_name;
-          html += '<div class="cd-section">';
-          html += '<div class="cd-session-label">' + sessionLabel + ' IN</div>';
-          html += '<div class="countdown">';
-          html += '<div class="cd-unit"><div class="cd-num">' + String(days).padStart(2,'0') + '</div><div class="cd-label">DAYS</div></div>';
-          html += '<div class="cd-unit"><div class="cd-num">' + String(hrs).padStart(2,'0') + '</div><div class="cd-label">HRS</div></div>';
-          html += '</div>';
-          html += '</div>';
-        }
       }
 
       html += '</div>'; // hero-content
