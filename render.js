@@ -74,6 +74,9 @@ async function main() {
       await page.close();
 
       console.log(`  ✓ ${pngName}`);
+
+      // Delay between files to avoid API rate limits
+      await new Promise(r => setTimeout(r, 2000));
     }
 
     await context.close();

@@ -88,117 +88,185 @@ body {
   white-space: nowrap;
 }
 
-/* Next Race Hero ~190px */
+/* Next Race Hero */
 .next-race {
   background: #f4f3f0;
   border: 1px solid #d0cec9;
   border-radius: 8px;
-  padding: 14px 18px;
-  margin: 0 12px 10px;
+  margin: 0 8px 8px;
   flex-shrink: 0;
   display: flex;
-  justify-content: space-between;
-  gap: 16px;
-  min-height: 170px;
+  overflow: hidden;
 }
 
-.next-race-left {
-  flex: 1;
-  min-width: 0;
-}
-
-.next-race-top {
+.hero-track-side {
+  width: 160px;
+  flex-shrink: 0;
   display: flex;
   align-items: center;
-  gap: 8px;
-  margin-bottom: 6px;
+  justify-content: center;
+  padding: 12px;
 }
 
-.next-race-label {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 11px;
-  font-weight: 500;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: #666;
+.hero-track-img {
+  width: 130px;
+  height: auto;
+  filter: grayscale(1);
+  opacity: 0.4;
 }
 
-.round-pill {
+.hero-content {
+  flex: 1;
+  padding: 12px 16px 10px 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.hero-upnext {
   font-family: 'JetBrains Mono', monospace;
   font-size: 10px;
-  font-weight: 500;
-  color: #555;
-  border: 1px solid #999;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #000;
+  border: 1.5px solid #000;
   border-radius: 10px;
-  padding: 1px 8px;
-  white-space: nowrap;
+  padding: 1px 10px;
+  display: inline-block;
+  width: fit-content;
+  margin-bottom: 10px;
+}
+
+.hero-round {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  font-weight: 400;
+  color: #666;
+  letter-spacing: 1px;
+  margin-bottom: 4px;
 }
 
 .next-race-name {
   font-family: 'Playfair Display', serif;
-  font-weight: 700;
-  font-size: 24px;
-  line-height: 1.15;
+  font-weight: 900;
+  font-size: 32px;
+  line-height: 1.1;
   color: #000;
-  margin-bottom: 6px;
+  margin-bottom: 8px;
 }
 
-.next-race-location {
+.hero-meta {
+  display: flex;
+  gap: 14px;
   font-family: 'Inter', sans-serif;
-  font-size: 14px;
-  font-weight: 400;
+  font-size: 13px;
   color: #555;
+  margin-bottom: 12px;
 }
 
-.sessions-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 4px 12px;
-  margin-top: 8px;
-}
-
-.session-item {
-  font-family: 'JetBrains Mono', monospace;
+.hero-meta i {
+  color: #999;
+  margin-right: 3px;
   font-size: 11px;
-  font-weight: 400;
-  color: #555;
-  white-space: nowrap;
 }
 
-.session-item .s-name {
-  font-weight: 500;
-  color: #333;
-}
-
-.session-item.is-next {
-  font-weight: 600;
-  color: #000;
-}
-
-.session-item.is-next .s-name {
-  color: #000;
-}
-
-.next-race-right {
-  flex-shrink: 0;
-  text-align: right;
+.session-pills {
   display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: flex-end;
+  gap: 5px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
 }
 
-.next-race-dates {
+.s-pill {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 16px;
+  font-size: 10px;
   font-weight: 500;
+  border: 1px solid #d0cec9;
+  border-radius: 6px;
+  padding: 3px 8px;
+  text-align: center;
+  line-height: 1.3;
+  background: #fff;
+}
+
+.s-pill .s-label {
+  font-size: 8px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #999;
+  display: block;
+}
+
+.s-pill .s-time {
   color: #333;
+  font-weight: 600;
+}
+
+.s-pill.is-next {
+  border-color: #000;
+  border-width: 1.5px;
+}
+
+.s-pill.is-next .s-label {
+  color: #000;
+}
+
+.s-pill.is-next .s-time {
+  color: #000;
+}
+
+.s-pill.is-race {
+  background: #f0f0f0;
+}
+
+.cd-section {
+  margin-top: auto;
+}
+
+.cd-session-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: #666;
+  margin-bottom: 2px;
 }
 
 .countdown {
   display: flex;
-  gap: 14px;
-  margin-top: 6px;
+  gap: 8px;
+  align-items: baseline;
+}
+
+.cd-num {
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  font-size: 32px;
+  line-height: 1;
+  color: #000;
+}
+
+.cd-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #999;
+  margin-top: 1px;
+}
+
+.cd-unit {
+  text-align: center;
+}
+
+.cd-tz {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  color: #999;
+  align-self: flex-end;
+  margin-left: 4px;
 }
 
 .cd-unit {
@@ -279,6 +347,17 @@ body {
   font-weight: 400;
   color: #999;
   line-height: 1;
+}
+
+.tile-flag {
+  position: absolute;
+  bottom: 4px;
+  left: 6px;
+  width: 22px;
+  height: auto;
+  opacity: 0.6;
+  filter: grayscale(1);
+  border-radius: 2px;
 }
 
 .tile-name {
@@ -408,10 +487,18 @@ body {
     return sMonth + ' ' + sDay + '\u2013' + eMonth + ' ' + eDay;
   }
 
-  async function fetchJSON(url) {
-    var resp = await fetch(url);
-    if (!resp.ok) throw new Error('API returned ' + resp.status);
-    return resp.json();
+  async function fetchJSON(url, retries) {
+    retries = retries || 3;
+    for (var i = 0; i < retries; i++) {
+      var resp = await fetch(url);
+      if (resp.status === 429) {
+        await new Promise(function(r) { setTimeout(r, Math.pow(2, i) * 2000); });
+        continue;
+      }
+      if (!resp.ok) throw new Error('API returned ' + resp.status);
+      return resp.json();
+    }
+    throw new Error('Rate limited after ' + retries + ' retries');
   }
 
   function escapeHtml(str) {
@@ -510,52 +597,70 @@ body {
       var nextSession = raceSessions.find(function(s) { return new Date(s.date_start) > now; }) || null;
 
       html += '<div class="next-race">';
-      html += '<div class="next-race-left">';
-      html += '<div class="next-race-top">';
-      html += '<i class="fa-solid fa-flag-checkered" style="font-size:11px;color:#666"></i>';
-      html += '<span class="next-race-label">NEXT RACE</span>';
-      html += '<span class="round-pill">ROUND ' + round + '</span>';
-      html += '</div>';
-      html += '<div class="next-race-name">' + escapeHtml(nextRace.meeting_name) + '</div>';
-      html += '<div class="next-race-location"><i class="fa-solid fa-location-dot" style="font-size:12px;color:#666;margin-right:4px"></i>' + loc + '</div>';
 
-      // Session schedule in Seattle time
+      // Left: track image
+      html += '<div class="hero-track-side">';
+      if (nextRace.circuit_image) {
+        html += '<img class="hero-track-img" src="' + escapeHtml(nextRace.circuit_image) + '" alt="" onerror="this.style.display=\'none\'">';
+      }
+      html += '</div>';
+
+      // Right: content
+      html += '<div class="hero-content">';
+      html += '<span class="hero-upnext">UP NEXT</span>';
+      html += '<div class="hero-round">ROUND ' + round + ' \u00b7 ' + dateRange + '</div>';
+      html += '<div class="next-race-name">' + escapeHtml(nextRace.meeting_name) + '</div>';
+      html += '<div class="hero-meta">';
+      html += '<span><i class="fa-solid fa-location-dot"></i>' + escapeHtml(nextRace.location || '') + '</span>';
+      if (nextRace.country_name) html += '<span><i class="fa-solid fa-flag"></i>' + escapeHtml(nextRace.country_name) + '</span>';
+      if (nextRace.circuit_short_name) html += '<span><i class="fa-solid fa-road"></i>' + escapeHtml(nextRace.circuit_short_name) + '</span>';
+      html += '</div>';
+
+      // Session pills
       var displaySessions = raceSessions.filter(function(s) {
         var n = s.session_name || '';
         return ['Practice 1','Practice 2','Practice 3','Qualifying','Sprint Qualifying','Sprint','Race'].indexOf(n) >= 0;
       });
       if (displaySessions.length) {
         var sessionLabels = {'Practice 1':'FP1','Practice 2':'FP2','Practice 3':'FP3','Qualifying':'QUAL','Sprint Qualifying':'SQ','Sprint':'SPRINT','Race':'RACE'};
-        html += '<div class="sessions-list">';
+        html += '<div class="session-pills">';
         displaySessions.forEach(function(s) {
           var d = new Date(s.date_start);
-          var seattleStr = d.toLocaleString('en-US', {timeZone:'America/Los_Angeles', weekday:'short', hour:'numeric', minute:'2-digit', hour12:true});
+          var dayStr = d.toLocaleString('en-US', {timeZone:'America/Los_Angeles', weekday:'short'});
+          var timeStr = d.toLocaleString('en-US', {timeZone:'America/Los_Angeles', hour:'numeric', minute:'2-digit', hour12:true});
           var label = sessionLabels[s.session_name] || s.session_name;
           var isNext = nextSession && s.session_key === nextSession.session_key;
-          html += '<span class="session-item' + (isNext ? ' is-next' : '') + '">';
-          html += '<span class="s-name">' + label + '</span> ' + seattleStr;
-          html += '</span>';
+          var isRace = s.session_name === 'Race';
+          var cls = 's-pill' + (isNext ? ' is-next' : '') + (isRace ? ' is-race' : '');
+          html += '<div class="' + cls + '">';
+          html += '<span class="s-label">' + label + '</span>';
+          html += '<span class="s-time">' + dayStr + ' ' + timeStr + '</span>';
+          html += '</div>';
         });
+        html += '<span class="cd-tz">PDT</span>';
         html += '</div>';
       }
-      html += '</div>';
 
-      html += '<div class="next-race-right">';
-      html += '<div class="next-race-dates">' + dateRange + '</div>';
+      // Countdown
       if (nextSession) {
         var diff = new Date(nextSession.date_start) - now;
         if (diff > 0) {
           var totalHrs = Math.floor(diff / 3600000);
           var days = Math.floor(totalHrs / 24);
           var hrs = totalHrs % 24;
+          var sessionLabel = sessionLabels ? (sessionLabels[nextSession.session_name] || nextSession.session_name) : nextSession.session_name;
+          html += '<div class="cd-section">';
+          html += '<div class="cd-session-label">' + sessionLabel + ' IN</div>';
           html += '<div class="countdown">';
-          html += '<div class="cd-unit"><div class="cd-num">' + days + '</div><div class="cd-label">DAYS</div></div>';
-          html += '<div class="cd-unit"><div class="cd-num">' + hrs + '</div><div class="cd-label">HRS</div></div>';
+          html += '<div class="cd-unit"><div class="cd-num">' + String(days).padStart(2,'0') + '</div><div class="cd-label">DAYS</div></div>';
+          html += '<div class="cd-unit"><div class="cd-num">' + String(hrs).padStart(2,'0') + '</div><div class="cd-label">HRS</div></div>';
+          html += '</div>';
           html += '</div>';
         }
       }
-      html += '</div>';
-      html += '</div>';
+
+      html += '</div>'; // hero-content
+      html += '</div>'; // next-race
     }
 
     // Snaking Timeline with D3 path
@@ -608,10 +713,15 @@ body {
 
       var tileName = escapeHtml((race.meeting_name || '').replace('Grand Prix', 'GP'));
 
+      var flagUrl = race.country_flag || '';
+
       html += '<div class="' + tileClass + '" style="left:' + x + 'px;top:' + y + 'px;">';
       html += '<span class="tile-round">' + String(rnd).padStart(2, '0') + '</span>';
       if (sprintWeekend) {
         html += '<span class="sprint-badge">S</span>';
+      }
+      if (flagUrl) {
+        html += '<img class="tile-flag" src="' + escapeHtml(flagUrl) + '" alt="" onerror="this.style.display=\'none\'">';
       }
       html += '<div class="tile-name">' + tileName + '</div>';
       html += '<div class="tile-date">' + tileDate + '</div>';
