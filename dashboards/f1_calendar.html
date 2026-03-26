@@ -28,7 +28,7 @@ body {
   line-height: 1.4;
 }
 
-.container {
+.page {
   width: 768px;
   height: 1024px;
   padding: 20px;
@@ -48,8 +48,9 @@ body {
   align-items: center;
   justify-content: space-between;
   padding: 0 4px;
-  margin-bottom: 12px;
+  margin-bottom: 0;
   flex-shrink: 0;
+  height: 45px;
 }
 
 .header-left {
@@ -74,7 +75,6 @@ body {
   letter-spacing: 3px;
   text-transform: uppercase;
   color: #666;
-  margin-top: 4px;
 }
 
 .progress-pill {
@@ -88,109 +88,152 @@ body {
   white-space: nowrap;
 }
 
-/* Next Race Hero */
-.next-race {
-  background: #f4f3f0;
-  border: 1px solid #d0cec9;
-  border-radius: 8px;
-  margin: 0 8px 8px;
-  flex-shrink: 0;
-  display: flex;
-  overflow: hidden;
-}
-
-.hero-track-side {
-  width: 160px;
-  flex-shrink: 0;
+/* Previous Race Strip */
+.prev-race-strip {
   display: flex;
   align-items: center;
-  justify-content: center;
-  padding: 12px;
+  justify-content: space-between;
+  padding: 8px 8px;
+  border-bottom: 1px solid #e8e6e1;
+  flex-shrink: 0;
+  height: 50px;
 }
 
-.hero-track-img {
-  width: 130px;
-  height: auto;
-  filter: grayscale(1);
-  opacity: 0.4;
+.prev-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #999;
+  margin-right: 10px;
 }
 
-.hero-content {
+.prev-name {
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  color: #999;
+}
+
+.prev-right {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: #bbb;
+}
+
+/* Hero Section */
+.hero {
   flex: 1;
-  padding: 12px 16px 10px 0;
   display: flex;
   flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0 20px;
+  overflow: hidden;
 }
 
 .hero-upnext {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 700;
   letter-spacing: 2px;
   text-transform: uppercase;
   color: #000;
   border: 1.5px solid #000;
   border-radius: 10px;
-  padding: 1px 10px;
-  display: inline-block;
-  width: fit-content;
-  margin-bottom: 10px;
+  padding: 3px 16px;
+  margin-bottom: 16px;
 }
 
 .hero-round {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 12px;
+  font-size: 15px;
   font-weight: 400;
   color: #666;
-  letter-spacing: 1px;
-  margin-bottom: 4px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-bottom: 10px;
 }
 
-.next-race-name {
+.hero-race-name {
   font-family: 'Playfair Display', serif;
   font-weight: 900;
-  font-size: 32px;
-  line-height: 1.1;
+  font-size: 56px;
+  line-height: 1.05;
+  letter-spacing: -2px;
   color: #000;
-  margin-bottom: 8px;
-}
-
-.hero-meta {
-  display: flex;
-  gap: 14px;
-  font-family: 'Inter', sans-serif;
-  font-size: 13px;
-  color: #555;
+  text-align: center;
   margin-bottom: 12px;
 }
 
-.hero-meta i {
+.hero-location {
+  font-family: 'Inter', sans-serif;
+  font-size: 18px;
+  color: #555;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 0;
+}
+
+.hero-location i {
+  font-size: 14px;
   color: #999;
-  margin-right: 3px;
-  font-size: 11px;
+}
+
+.hero-track-img {
+  width: 420px;
+  height: auto;
+  filter: grayscale(1);
+  opacity: 0.9;
+  margin-top: 35px;
+  margin-bottom: 30px;
+}
+
+.hero-today-row {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.hero-today-when {
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  font-size: 32px;
+  line-height: 1;
+  color: #000;
+}
+
+.hero-today-session {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 15px;
+  font-weight: 500;
+  color: #333;
 }
 
 .session-pills {
   display: flex;
-  gap: 5px;
+  gap: 8px;
   flex-wrap: wrap;
-  margin-bottom: 12px;
+  justify-content: center;
 }
 
 .s-pill {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 500;
   border: 1px solid #d0cec9;
-  border-radius: 6px;
-  padding: 3px 8px;
+  border-radius: 8px;
+  padding: 6px 12px;
   text-align: center;
   line-height: 1.3;
   background: #fff;
 }
 
 .s-pill .s-label {
-  font-size: 8px;
+  font-size: 9px;
   letter-spacing: 1px;
   text-transform: uppercase;
   color: #999;
@@ -216,140 +259,50 @@ body {
 }
 
 .s-pill.is-race {
-  background: #f0f0f0;
+  background: #f4f3f0;
 }
 
-.cd-row {
+.s-tz {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  color: #bbb;
+  letter-spacing: 1px;
+  align-self: center;
+  margin-left: 2px;
+}
+
+/* After Next Strip */
+.after-race-strip {
   display: flex;
-  align-items: baseline;
-  gap: 12px;
-  margin-bottom: 8px;
-}
-
-.cd-when {
-  font-family: 'Playfair Display', serif;
-  font-weight: 900;
-  font-size: 24px;
-  line-height: 1;
-  color: #000;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 8px;
+  border-top: 1px solid #e8e6e1;
   flex-shrink: 0;
+  height: 50px;
 }
 
-.cd-next-session {
+.after-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #999;
+  margin-right: 10px;
+}
+
+.after-name {
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  color: #666;
+}
+
+.after-right {
   font-family: 'JetBrains Mono', monospace;
   font-size: 12px;
-  font-weight: 500;
-  color: #333;
-}
-
-/* Snake Timeline */
-.snake-section {
-  flex: 1;
-  overflow: hidden;
-  padding: 4px 8px 0;
-  position: relative;
-}
-
-.snake-grid {
-  position: relative;
-  width: 100%;
-  height: 100%;
-}
-
-.snake-chevron {
-  position: absolute;
-  z-index: 2;
-  color: #000;
-  font-size: 18px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  pointer-events: none;
-}
-
-.snake-tile {
-  width: 210px;
-  height: 60px;
-  background: #fff;
-  border: 1px solid #d0cec9;
-  border-radius: 6px;
-  position: absolute;
-  padding: 6px 10px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  z-index: 1;
-}
-
-.snake-tile.is-completed {
-  opacity: 0.45;
-}
-
-.snake-tile.is-next-upcoming {
-  border: 2px solid #000;
-}
-
-.tile-round {
-  position: absolute;
-  top: 4px;
-  left: 8px;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 11px;
-  font-weight: 400;
   color: #999;
-  line-height: 1;
-}
-
-.tile-flag {
-  position: absolute;
-  bottom: 4px;
-  left: 6px;
-  width: 22px;
-  height: auto;
-  opacity: 0.6;
-  filter: grayscale(1);
-  border-radius: 2px;
-}
-
-.tile-name {
-  font-family: 'Inter', sans-serif;
-  font-weight: 600;
-  font-size: 14px;
-  color: #000;
-  line-height: 1.15;
-  text-align: center;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  margin-top: 2px;
-}
-
-.tile-date {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 11px;
-  font-weight: 400;
-  color: #666;
-  text-align: center;
-  line-height: 1;
-  margin-top: 2px;
-}
-
-.sprint-badge {
-  position: absolute;
-  top: 4px;
-  right: 5px;
-  width: 14px;
-  height: 14px;
-  background: #000;
-  color: #fff;
-  border-radius: 50%;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 8px;
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  line-height: 1;
 }
 
 /* Loading / Error */
@@ -374,6 +327,7 @@ body {
   color: #555;
   text-align: center;
   line-height: 1.6;
+  white-space: pre-line;
 }
 
 .timestamp {
@@ -388,7 +342,7 @@ body {
 </style>
 </head>
 <body>
-<div class="container" id="app">
+<div class="page" id="app">
   <div class="loading-state" id="loading">LOADING RACE DATA</div>
 </div>
 <span class="timestamp" id="timestamp"></span>
@@ -425,11 +379,11 @@ body {
     return sMonth + ' ' + sDay + '\u2013' + eMonth + ' ' + eDay;
   }
 
-  function formatCompactDateRange(startStr, endStr) {
+  function formatDateRangeUpper(startStr, endStr) {
     var s = new Date(startStr);
     var e = new Date(endStr);
-    var sMonth = months[s.getUTCMonth()];
-    var eMonth = months[e.getUTCMonth()];
+    var sMonth = months[s.getUTCMonth()].toUpperCase();
+    var eMonth = months[e.getUTCMonth()].toUpperCase();
     var sDay = s.getUTCDate();
     var eDay = e.getUTCDate();
     if (sMonth === eMonth) {
@@ -517,18 +471,18 @@ body {
     var totalRaces = races.length;
     var completedCount = completed.length;
 
-    // Next race
+    // Previous race (last completed)
+    var prevRace = completed.length > 0 ? completed[completed.length - 1] : null;
+
+    // Next race (first upcoming)
     var nextRace = upcoming[0] || null;
+
+    // Race after next
+    var afterNextRace = upcoming.length > 1 ? upcoming[1] : null;
 
     // Round map
     var roundMap = {};
     races.forEach(function(r, i) { roundMap[r.meeting_key] = i + 1; });
-
-    // Build all races for snake grid
-    var allForSnake = races;
-
-    // Determine the next-race key for highlight in the snake
-    var nextRaceKey = nextRace ? nextRace.meeting_key : null;
 
     var app = document.getElementById('app');
     var html = '';
@@ -542,47 +496,62 @@ body {
     html += '<div class="progress-pill">' + completedCount + '/' + totalRaces + '</div>';
     html += '</div>';
 
-    // Next Race Hero Card
+    // Previous Race Strip
+    if (prevRace) {
+      var prevSessions = sessionMap[prevRace.meeting_key] || [];
+      var prevDateStr = formatDate(prevRace.date_start);
+      if (prevSessions.length > 1) {
+        prevDateStr = formatDateRange(prevSessions[0].date_start, prevSessions[prevSessions.length - 1].date_start);
+      }
+      html += '<div class="prev-race-strip">';
+      html += '<div><span class="prev-label">PREVIOUS</span><span class="prev-name">' + escapeHtml((prevRace.meeting_name || '').replace('Grand Prix', 'GP')) + '</span></div>';
+      html += '<span class="prev-right">' + prevDateStr + '</span>';
+      html += '</div>';
+    }
+
+    // Next Race Hero
     if (nextRace) {
       var round = roundMap[nextRace.meeting_key];
       var raceSessions = sessionMap[nextRace.meeting_key] || [];
-      var dateRange = formatDate(nextRace.date_start);
+      var heroDateRange = formatDate(nextRace.date_start);
       if (raceSessions.length > 1) {
-        var first = raceSessions[0];
-        var last = raceSessions[raceSessions.length - 1];
-        dateRange = formatDateRange(first.date_start, last.date_start);
+        heroDateRange = formatDateRangeUpper(raceSessions[0].date_start, raceSessions[raceSessions.length - 1].date_start);
+      } else {
+        heroDateRange = months[new Date(nextRace.date_start).getUTCMonth()].toUpperCase() + ' ' + new Date(nextRace.date_start).getUTCDate();
       }
 
-      var loc = escapeHtml(nextRace.location || '');
-      if (nextRace.country_name) loc += ', ' + escapeHtml(nextRace.country_name);
+      var locParts = [];
+      if (nextRace.location) locParts.push(escapeHtml(nextRace.location));
+      if (nextRace.country_name) locParts.push(escapeHtml(nextRace.country_name));
+      if (nextRace.circuit_short_name) locParts.push(escapeHtml(nextRace.circuit_short_name));
+      var locStr = locParts.join(' \u00b7 ');
 
       // Find next upcoming session
       var nextSession = raceSessions.find(function(s) { return new Date(s.date_start) > now; }) || null;
 
-      html += '<div class="next-race">';
+      // Session labels
+      var sessionLabels = {'Practice 1':'FP1','Practice 2':'FP2','Practice 3':'FP3','Qualifying':'QUAL','Sprint Qualifying':'SQ','Sprint':'SPRINT','Race':'RACE'};
 
-      // Left: track image
-      html += '<div class="hero-track-side">';
+      html += '<div class="hero">';
+
+      // UP NEXT pill
+      html += '<span class="hero-upnext">UP NEXT</span>';
+
+      // Round + date range
+      html += '<div class="hero-round">ROUND ' + round + ' \u00b7 ' + heroDateRange + '</div>';
+
+      // Race name - the headline
+      html += '<div class="hero-race-name">' + escapeHtml(nextRace.meeting_name || '') + '</div>';
+
+      // Location line
+      html += '<div class="hero-location"><i class="fa-solid fa-location-dot"></i>' + locStr + '</div>';
+
+      // Track map - the visual anchor
       if (nextRace.circuit_image) {
         html += '<img class="hero-track-img" src="' + escapeHtml(nextRace.circuit_image) + '" alt="" onerror="this.style.display=\'none\'">';
       }
-      html += '</div>';
 
-      // Right: content
-      html += '<div class="hero-content">';
-      html += '<span class="hero-upnext">UP NEXT</span>';
-      html += '<div class="hero-round">ROUND ' + round + ' \u00b7 ' + dateRange + '</div>';
-      html += '<div class="next-race-name">' + escapeHtml(nextRace.meeting_name) + '</div>';
-      html += '<div class="hero-meta">';
-      html += '<span><i class="fa-solid fa-location-dot"></i>' + escapeHtml(nextRace.location || '') + '</span>';
-      if (nextRace.country_name) html += '<span><i class="fa-solid fa-flag"></i>' + escapeHtml(nextRace.country_name) + '</span>';
-      if (nextRace.circuit_short_name) html += '<span><i class="fa-solid fa-road"></i>' + escapeHtml(nextRace.circuit_short_name) + '</span>';
-      html += '</div>';
-
-      // Session labels needed for both countdown and pills
-      var sessionLabels = {'Practice 1':'FP1','Practice 2':'FP2','Practice 3':'FP3','Qualifying':'QUAL','Sprint Qualifying':'SQ','Sprint':'SPRINT','Race':'RACE'};
-
-      // Next session: relative day + time (above pills)
+      // Today / session info row
       if (nextSession) {
         var diff = new Date(nextSession.date_start) - now;
         if (diff > 0) {
@@ -599,9 +568,9 @@ body {
           var sessDay = sessDate.toLocaleString('en-US', {timeZone:'America/Los_Angeles', weekday:'long'});
           var sessTime = sessDate.toLocaleString('en-US', {timeZone:'America/Los_Angeles', hour:'numeric', minute:'2-digit', hour12:true});
 
-          html += '<div class="cd-row">';
-          html += '<span class="cd-when">' + when + '</span>';
-          html += '<span class="cd-next-session">' + sessionLabel + ' \u00b7 ' + sessDay + ' ' + sessTime + ' PDT</span>';
+          html += '<div class="hero-today-row">';
+          html += '<span class="hero-today-when">' + when + '</span>';
+          html += '<span class="hero-today-session">' + sessionLabel + ' \u00b7 ' + sessDay + ' ' + sessTime + ' PDT</span>';
           html += '</div>';
         }
       }
@@ -626,122 +595,51 @@ body {
           html += '<span class="s-time">' + dayStr + ' ' + timeStr + '</span>';
           html += '</div>';
         });
-        html += '<span class="cd-tz">PDT</span>';
+        html += '<span class="s-tz">PDT</span>';
         html += '</div>';
       }
 
-      html += '</div>'; // hero-content
-      html += '</div>'; // next-race
+      html += '</div>'; // hero
     }
 
-    // Snaking Timeline with D3 path
-    var cols = 3;
-    var tileW = 210, tileH = 60, gapX = 14, gapY = 18;
-    var gridWidth = cols * tileW + (cols - 1) * gapX;
-    var totalRows = Math.ceil(allForSnake.length / cols);
-    var gridHeight = totalRows * tileH + (totalRows - 1) * gapY;
-    var gridPadLeft = Math.floor((736 - 16 - gridWidth) / 2); // center within snake-section
-
-    html += '<div class="snake-section">';
-    html += '<div class="snake-grid" id="snake-grid">';
-
-
-    // Render tiles with absolute positioning
-    allForSnake.forEach(function(race, i) {
-      var row = Math.floor(i / cols);
-      var colInRow = i % cols;
-      var isReversed = row % 2 === 1;
-      var col = isReversed ? (cols - 1 - colInRow) : colInRow;
-
-      var x = gridPadLeft + col * (tileW + gapX);
-      var y = row * (tileH + gapY);
-
-      var rnd = roundMap[race.meeting_key];
-      var raceSess = sessionMap[race.meeting_key] || [];
-      var sprintWeekend = isSprint(raceSess);
-
-      // Determine date range for tile
-      var tileDate = formatDate(race.date_start);
-      if (raceSess.length > 1) {
-        var lastS = raceSess[raceSess.length - 1];
-        tileDate = formatCompactDateRange(raceSess[0].date_start, lastS.date_start);
+    // Race After Next Strip
+    if (afterNextRace) {
+      var afterSessions = sessionMap[afterNextRace.meeting_key] || [];
+      var afterDateStr = formatDate(afterNextRace.date_start);
+      if (afterSessions.length > 1) {
+        afterDateStr = formatDateRange(afterSessions[0].date_start, afterSessions[afterSessions.length - 1].date_start);
       }
-
-      // Is completed?
-      var raceEnd;
-      if (raceSess.length > 0) {
-        var lastSess = raceSess[raceSess.length - 1];
-        raceEnd = new Date(lastSess.date_end || lastSess.date_start);
-      } else {
-        raceEnd = new Date(new Date(race.date_start).getTime() + 3 * 86400000);
-      }
-      var isCompleted = raceEnd < now;
-      var isNextUpcoming = race.meeting_key === nextRaceKey;
-
-      var tileClass = 'snake-tile';
-      if (isCompleted) tileClass += ' is-completed';
-      if (isNextUpcoming) tileClass += ' is-next-upcoming';
-
-      var tileName = escapeHtml((race.meeting_name || '').replace('Grand Prix', 'GP'));
-
-      var flagUrl = race.country_flag || '';
-
-      html += '<div class="' + tileClass + '" style="left:' + x + 'px;top:' + y + 'px;">';
-      html += '<span class="tile-round">' + String(rnd).padStart(2, '0') + '</span>';
-      if (sprintWeekend) {
-        html += '<span class="sprint-badge">S</span>';
-      }
-      if (flagUrl) {
-        html += '<img class="tile-flag" src="' + escapeHtml(flagUrl) + '" alt="" onerror="this.style.display=\'none\'">';
-      }
-      html += '<div class="tile-name">' + tileName + '</div>';
-      html += '<div class="tile-date">' + tileDate + '</div>';
+      html += '<div class="after-race-strip">';
+      html += '<div><span class="after-label">UP AFTER</span><span class="after-name">' + escapeHtml((afterNextRace.meeting_name || '').replace('Grand Prix', 'GP')) + '</span></div>';
+      html += '<span class="after-right">' + afterDateStr + '</span>';
       html += '</div>';
-
-      // Add chevrons between tiles
-      if (i < allForSnake.length - 1) {
-        var nextI = i + 1;
-        var nextRow = Math.floor(nextI / cols);
-        var nextColInRow = nextI % cols;
-        var nextIsRev = nextRow % 2 === 1;
-        var nextCol = nextIsRev ? (cols - 1 - nextColInRow) : nextColInRow;
-
-        if (nextRow === row) {
-          // Same row: horizontal chevron in the gap
-          var chevX, chevIcon;
-          if (!isReversed) {
-            chevX = gridPadLeft + col * (tileW + gapX) + tileW; // right edge of current tile
-            chevIcon = 'fa-chevron-right';
-          } else {
-            chevX = gridPadLeft + col * (tileW + gapX) - gapX; // left edge gap
-            chevIcon = 'fa-chevron-left';
-          }
-          var chevY = y + tileH / 2;
-          html += '<div class="snake-chevron" style="left:' + chevX + 'px;top:' + (chevY - 9) + 'px;width:' + gapX + 'px;height:18px;">';
-          html += '<i class="fa-solid ' + chevIcon + '"></i></div>';
-        } else {
-          // Row turn: down chevron at the edge
-          var turnX;
-          if (!isReversed) {
-            turnX = gridPadLeft + col * (tileW + gapX) + tileW / 2; // center of last tile
-          } else {
-            turnX = gridPadLeft + col * (tileW + gapX) + tileW / 2;
-          }
-          var turnY = y + tileH;
-          html += '<div class="snake-chevron" style="left:' + (turnX - 9) + 'px;top:' + turnY + 'px;width:18px;height:' + gapY + 'px;">';
-          html += '<i class="fa-solid fa-chevron-down"></i></div>';
-        }
-      }
-    });
-
-    html += '</div>'; // snake-grid
-    html += '</div>'; // snake-section
+    }
 
     app.innerHTML = html;
 
-    document.body.setAttribute('data-loaded', 'true');
+    // Set data-loaded after all images have loaded
+    var images = app.querySelectorAll('img');
+    if (images.length === 0) {
+      document.body.setAttribute('data-loaded', 'true');
+    } else {
+      var loaded = 0;
+      var total = images.length;
+      function checkDone() {
+        loaded++;
+        if (loaded >= total) {
+          document.body.setAttribute('data-loaded', 'true');
+        }
+      }
+      images.forEach(function(img) {
+        if (img.complete) {
+          checkDone();
+        } else {
+          img.addEventListener('load', checkDone);
+          img.addEventListener('error', checkDone);
+        }
+      });
+    }
   }
-
 
   function renderError(msg) {
     var app = document.getElementById('app');
