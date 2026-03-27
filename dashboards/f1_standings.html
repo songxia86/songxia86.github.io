@@ -198,9 +198,9 @@ body { margin: 0; width: 768px; height: 1024px; overflow: hidden; background: #e
       fetchJSON(API + '/championship_drivers?' + champKey).catch(function() { return []; }),
       fetchJSON(API + '/championship_teams?' + champKey).catch(function() { return []; })
     ]);
-    var driversRaw = results[0];
-    var champDrivers = results[1];
-    var champTeams = results[2];
+    var driversRaw = Array.isArray(results[0]) ? results[0] : [];
+    var champDrivers = Array.isArray(results[1]) ? results[1] : [];
+    var champTeams = Array.isArray(results[2]) ? results[2] : [];
 
     // Build driver lookup by number
     var driverMap = {};
@@ -220,6 +220,7 @@ body { margin: 0; width: 768px; height: 1024px; overflow: hidden; background: #e
 
     if (!sortedDrivers.length && !sortedTeams.length) {
       document.getElementById('content').innerHTML = '<div class="error-msg">Data unavailable</div>';
+      document.body.setAttribute('data-status', 'error');
     } else {
       var html = '';
 
@@ -321,6 +322,7 @@ body { margin: 0; width: 768px; height: 1024px; overflow: hidden; background: #e
     }
   } catch (e) {
     document.getElementById('content').innerHTML = '<div class="error-msg">Data unavailable</div>';
+    document.body.setAttribute('data-status', 'error');
   }
 
   // Wait for all images (headshots) to load before signaling ready

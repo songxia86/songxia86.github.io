@@ -650,6 +650,7 @@ body {
     var app = document.getElementById('app');
     app.innerHTML = '<div class="error-state">' + escapeHtml(msg) + '</div>';
     document.body.setAttribute('data-loaded', 'true');
+    document.body.setAttribute('data-status', 'error');
   }
 
   try {
@@ -665,7 +666,7 @@ body {
       return;
     }
 
-    render(meetings, sessions || []);
+    render(meetings, Array.isArray(sessions) ? sessions : []);
   } catch (err) {
     renderError('Unable to load race data.\n' + (err.message || 'Network error'));
   }

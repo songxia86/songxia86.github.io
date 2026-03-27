@@ -116,6 +116,14 @@ async function main() {
         // Extra settle time for late-loading images
         await new Promise(r => setTimeout(r, 2000));
 
+        // Check if the page rendered successfully (not an error state)
+        const status = await page.evaluate(() => document.body.getAttribute('data-status'));
+        if (status === 'error') {
+          console.log(`  ⚠ ${file} rendered with error state, skipping screenshot`);
+          await page.close();
+          continue;
+        }
+
         await page.screenshot({ path: pngPath, fullPage: false });
         await page.close();
 
@@ -138,11 +146,10 @@ async function main() {
         if (size >= MIN_PNG_SIZE) {
           renderOk = true;
           console.log(`  ✓ ${pngName} (${(size/1024).toFixed(0)}KB)`);
-          // Remove backup
           if (fs.existsSync(prevPath)) fs.unlinkSync(prevPath);
           break;
         } else {
-          console.log(`  ⚠ ${pngName} too small (${(size/1024).toFixed(1)}KB), likely failed render`);
+          console.log(`  ⚠ ${pngName} too small (${(size/1024).toFixed(1)}KB)`);
         }
       }
 
