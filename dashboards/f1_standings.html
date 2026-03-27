@@ -177,10 +177,26 @@ body { margin: 0; width: 768px; height: 1024px; overflow: hidden; background: #e
   function esc(s) { var d = document.createElement('div'); d.textContent = s || ''; return d.innerHTML; }
 
   try {
+    // Find the most recent completed race session for championship data
+    // (championship endpoints only have data after race sessions, not practice/quali)
+    var now = new Date();
+    var raceSessions = await fetchJSON(API + '/sessions?year=' + now.getUTCFullYear() + '&session_name=Race').catch(function() { return []; });
+    var lastRaceKey = null;
+    raceSessions.sort(function(a, b) { return new Date(a.date_start) - new Date(b.date_start); });
+    for (var i = raceSessions.length - 1; i >= 0; i--) {
+      if (new Date(raceSessions[i].date_end || raceSessions[i].date_start) < now) {
+        lastRaceKey = raceSessions[i].session_key;
+        break;
+      }
+    }
+    var champKey = lastRaceKey ? ('session_key=' + lastRaceKey) : 'session_key=latest';
+
+    await new Promise(function(r) { setTimeout(r, 2000); });
+
     var results = await Promise.all([
       fetchJSON(API + '/drivers?session_key=latest').catch(function() { return []; }),
-      fetchJSON(API + '/championship_drivers?session_key=latest').catch(function() { return []; }),
-      fetchJSON(API + '/championship_teams?session_key=latest').catch(function() { return []; })
+      fetchJSON(API + '/championship_drivers?' + champKey).catch(function() { return []; }),
+      fetchJSON(API + '/championship_teams?' + champKey).catch(function() { return []; })
     ]);
     var driversRaw = results[0];
     var champDrivers = results[1];
