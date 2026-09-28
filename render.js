@@ -2,7 +2,6 @@ const { chromium } = require('playwright');
 const fs = require('fs');
 const path = require('path');
 const http = require('http');
-const { execSync } = require('child_process');
 
 const DASHBOARDS = path.join(__dirname, 'dashboards');
 const CONFIG_PATH = path.join(DASHBOARDS, 'render.config.json');
@@ -25,10 +24,10 @@ async function main() {
   const { configs } = JSON.parse(fs.readFileSync(CONFIG_PATH, 'utf8'));
 
   if (!configs || Object.keys(configs).length === 0) {
-    console.log('No configs defined in render.config.json');
-    return;
+    throw new Error('No configs defined in render.config.json');
   }
 
+  const failedRenders = [];
   const server = await startServer(DASHBOARDS);
   const port = server.address().port;
   console.log(`Local server on port ${port}`);
@@ -45,7 +44,8 @@ async function main() {
     const { files, ...renderSettings } = config;
 
     if (!files || files.length === 0) {
-      console.log(`[${configName}] No files listed, skipping`);
+      failedRenders.push(configName);
+      console.error(`[${configName}] No files listed`);
       continue;
     }
 
@@ -64,7 +64,8 @@ async function main() {
       const filePath = path.join(DASHBOARDS, file);
 
       if (!fs.existsSync(filePath)) {
-        console.log(`  ✗ ${file} not found, skipping`);
+        failedRenders.push(file);
+        console.error(`  ✗ ${file} not found`);
         continue;
       }
 
@@ -88,73 +89,48 @@ async function main() {
           await new Promise(r => setTimeout(r, 5000 * attempt));
         }
 
-        const page = await context.newPage();
-        await page.goto(`http://127.0.0.1:${port}/${file}`, { waitUntil: 'networkidle' });
+        let page;
+        try {
+          page = await context.newPage();
+          await page.goto(`http://127.0.0.1:${port}/${file}`, { waitUntil: 'domcontentloaded' });
 
-        // Wait for fonts to fully load
-        await page.waitForFunction(
-          () => document.fonts.ready.then(() => true),
-          { timeout: 10000 }
-        ).catch(() => {});
+          await page.waitForFunction(
+            () => document.fonts.ready.then(() => true),
+            null,
+            { timeout: 10000 }
+          );
+          await page.waitForFunction(
+            () => document.body.getAttribute('data-loaded') === 'true',
+            null,
+            { timeout: 90000 }
+          );
 
-        // Wait for page to signal data is loaded (45s timeout to allow retries in HTML)
-        await page.waitForFunction(
-          () => document.body.getAttribute('data-loaded') === 'true',
-          { timeout: 45000 }
-        ).catch(() => console.log(`  ⚠ ${file} did not set data-loaded`));
+          const status = await page.evaluate(() => document.body.getAttribute('data-status'));
+          if (status === 'error') throw new Error('dashboard reported a data error');
 
-        // Wait for all images (headshots, flags, track maps) to finish loading
-        await page.waitForFunction(
-          () => {
-            var imgs = document.images;
-            if (imgs.length === 0) return true;
-            return Array.from(imgs).every(function(img) { return img.complete && img.naturalWidth > 0; });
-          },
-          { timeout: 15000 }
-        ).catch(() => console.log(`  ⚠ ${file} some images may not have loaded`));
-
-        // Extra settle time for late-loading images
-        await new Promise(r => setTimeout(r, 2000));
-
-        // Check if the page rendered successfully (not an error state)
-        const status = await page.evaluate(() => document.body.getAttribute('data-status'));
-        if (status === 'error') {
-          console.log(`  ⚠ ${file} rendered with error state, skipping screenshot`);
-          await page.close();
-          continue;
-        }
-
-        await page.screenshot({ path: pngPath, fullPage: false });
-        await page.close();
-
-        // Downsample if needed
-        const scale = renderSettings.deviceScaleFactor || 1;
-        if (scale > 1) {
-          const tW = renderSettings.width;
-          const tH = renderSettings.height;
-          const cmds = [
-            `convert '${pngPath}' -resize ${tW}x${tH} -filter Lanczos '${pngPath}'`,
-            `sips -z ${tH} ${tW} '${pngPath}'`,
-          ];
-          for (const cmd of cmds) {
-            try { execSync(cmd + ' 2>/dev/null'); break; } catch(e) {}
+          const png = await page.screenshot({ path: pngPath, fullPage: false, scale: 'css' });
+          const width = png.readUInt32BE(16);
+          const height = png.readUInt32BE(20);
+          if (width !== renderSettings.width || height !== renderSettings.height) {
+            throw new Error(`unexpected PNG dimensions ${width}x${height}`);
           }
-        }
+          if (png.length < MIN_PNG_SIZE) {
+            throw new Error(`PNG too small (${(png.length / 1024).toFixed(1)}KB)`);
+          }
 
-        // Validate PNG size
-        const size = fs.statSync(pngPath).size;
-        if (size >= MIN_PNG_SIZE) {
           renderOk = true;
-          console.log(`  ✓ ${pngName} (${(size/1024).toFixed(0)}KB)`);
+          console.log(`  ✓ ${pngName} (${(png.length / 1024).toFixed(0)}KB)`);
           if (fs.existsSync(prevPath)) fs.unlinkSync(prevPath);
           break;
-        } else {
-          console.log(`  ⚠ ${pngName} too small (${(size/1024).toFixed(1)}KB)`);
+        } catch (err) {
+          console.warn(`  ⚠ ${file} render attempt ${attempt + 1} failed: ${err.message}`);
+        } finally {
+          if (page) await page.close();
         }
       }
 
-      // If all retries failed, restore previous good PNG
       if (!renderOk) {
+        failedRenders.push(pngName);
         if (fs.existsSync(prevPath)) {
           fs.copyFileSync(prevPath, pngPath);
           fs.unlinkSync(prevPath);
@@ -173,6 +149,10 @@ async function main() {
 
   await browser.close();
   server.close();
+
+  if (failedRenders.length) {
+    throw new Error(`Rendering failed for: ${failedRenders.join(', ')}`);
+  }
 
   // Generate index.html with links to all HTML and PNG files
   const allFiles = fs.readdirSync(DASHBOARDS)

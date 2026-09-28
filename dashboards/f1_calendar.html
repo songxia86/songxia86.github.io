@@ -666,7 +666,12 @@ body {
       return;
     }
 
-    render(meetings, Array.isArray(sessions) ? sessions : []);
+    if (!Array.isArray(sessions) || sessions.length === 0) {
+      renderError('No race sessions available for ' + YEAR + '.');
+      return;
+    }
+
+    render(meetings, sessions);
   } catch (err) {
     renderError('Unable to load race data.\n' + (err.message || 'Network error'));
   }

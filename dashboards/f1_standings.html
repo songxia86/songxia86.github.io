@@ -218,7 +218,7 @@ body { margin: 0; width: 768px; height: 1024px; overflow: hidden; background: #e
       return pa !== pb ? pa - pb : (b.points_current || 0) - (a.points_current || 0);
     }).slice(0, 5);
 
-    if (!sortedDrivers.length && !sortedTeams.length) {
+    if (!sortedDrivers.length || !sortedTeams.length) {
       document.getElementById('content').innerHTML = '<div class="error-msg">Data unavailable</div>';
       document.body.setAttribute('data-status', 'error');
     } else {
